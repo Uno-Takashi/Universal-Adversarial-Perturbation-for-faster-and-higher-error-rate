@@ -1,5 +1,6 @@
 import numpy as np
 from deeptarget import deeptarget
+from util_univ import *
 
 def proj_lp(v, xi, p):
 
@@ -16,7 +17,7 @@ def proj_lp(v, xi, p):
 
     return v
 
-def universal_perturbation(dataset, f, grads, delta=0.2, max_iter_uni = 10, xi=10, p=np.inf, num_classes=10, overshoot=0.02, max_iter_df=25):
+def universal_perturbation(dataset, f, grads, delta=0.2, max_iter_uni = 10, xi=10, p=np.inf, num_classes=10, overshoot=0.02, max_iter_df=25,search_num=5):
     """
     :param dataset: Images of size MxHxWxC (M: number of images)
 
@@ -58,7 +59,8 @@ def universal_perturbation(dataset, f, grads, delta=0.2, max_iter_uni = 10, xi=1
             if int(np.argmax(np.array(f(cur_img)).flatten())) == int(np.argmax(np.array(f(cur_img+v)).flatten())):
                 img_temp=cur_img+v
                 I = (np.array(np.array(f(cur_img+v)).flatten())).flatten().argsort()[::-1]
-                I=I[1:8]
+
+                I=I[1:search_num]
                 print('>> k = ', k, ', pass #', itr)
                 for x in I:
                     
@@ -75,24 +77,11 @@ def universal_perturbation(dataset, f, grads, delta=0.2, max_iter_uni = 10, xi=1
 
         itr = itr + 1
 
-        # Perturb the dataset with computed perturbation
-        dataset_perturbed = dataset + v
 
-        est_labels_orig = np.zeros((num_images))
-        est_labels_pert = np.zeros((num_images))
-
-        batch_size = 100
-        num_batches = np.int(np.ceil(np.float(num_images) / np.float(batch_size)))
-
-        # Compute the estimated labels in batches
-        for ii in range(0, num_batches):
-            m = (ii * batch_size)
-            M = min((ii+1)*batch_size, num_images)
-            est_labels_orig[m:M] = np.argmax(f(dataset[m:M, :, :, :]), axis=1).flatten()
-            est_labels_pert[m:M] = np.argmax(f(dataset_perturbed[m:M, :, :, :]), axis=1).flatten()
 
         # Compute the fooling rate
-        fooling_rate = float(np.sum(est_labels_pert != est_labels_orig) / float(num_images))
+        fooling_rate = fooling_rate_calc(v=v,dataset=dataset,f=f,batch_size=100)
+        print("")
         print('FOOLING RATE = ', fooling_rate)
 
     return v
