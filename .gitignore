@@ -338,3 +338,10 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# large size project datas
+
+imagenet_data.npy
+imagenet_vals_data.npy
+inception5h.zip
+tensorflow_inception_graph.pb
