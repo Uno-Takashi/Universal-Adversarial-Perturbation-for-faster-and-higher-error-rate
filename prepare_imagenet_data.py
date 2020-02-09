@@ -39,12 +39,34 @@ def preprocess_image_batch(image_paths, img_size=None, crop_size=None, color_mod
     else:
         return img_batch
 
+
 def undo_image_avg(img):
     img_copy = np.copy(img)
     img_copy[:, :, 0] = img_copy[:, :, 0] + 123.68
     img_copy[:, :, 1] = img_copy[:, :, 1] + 116.779
     img_copy[:, :, 2] = img_copy[:, :, 2] + 103.939
     return img_copy
+
+def do_image_avg(img):
+    img_copy = np.copy(img)
+    img_copy[:, :, 0] = img_copy[:, :, 0] - 123.68
+    img_copy[:, :, 1] = img_copy[:, :, 1] - 116.779
+    img_copy[:, :, 2] = img_copy[:, :, 2] - 103.939
+    img_copy.astype(np.uint8)
+    return img_copy
+
+def undo_image_list(img_list):
+    undo_list=np.zeros(img_list.shape,dtype=np.uint8)
+    for x in range(undo_list.shape[0]):
+        undo_list[x]=undo_image_avg(img_list[x]).astype(np.uint8)
+    return undo_list
+
+def do_image_list(img_list):
+    do_list=np.zeros(img_list.shape,dtype=np.float32)
+
+    for x in range(do_list.shape[0]):
+        do_list[x]=do_image_avg(img_list[x]).astype(np.float32)
+    return do_list
 
 def create_imagenet_npy(path_train_imagenet, len_batch=10000):
 

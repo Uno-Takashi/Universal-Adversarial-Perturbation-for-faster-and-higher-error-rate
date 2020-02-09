@@ -17,7 +17,7 @@ def proj_lp(v, xi, p):
 
     return v
 
-def universal_perturbation(dataset, f, grads, delta=0.2, max_iter_uni = 10, xi=10, p=np.inf, num_classes=10, overshoot=0.02, max_iter_df=25,search_num=5):
+def universal_perturbation(dataset, f, grads, delta=0.2, max_iter_uni = 10, xi=10, p=np.inf, num_classes=10, overshoot=0.02, max_iter_df=25,search_num=5,batch_size=128):
     """
     :param dataset: Images of size MxHxWxC (M: number of images)
 
@@ -60,7 +60,7 @@ def universal_perturbation(dataset, f, grads, delta=0.2, max_iter_uni = 10, xi=1
                 img_temp=cur_img+v
                 I = (np.array(np.array(f(cur_img+v)).flatten())).flatten().argsort()[::-1]
 
-                I=I[1:search_num]
+                I=I[1:search_num+1]
                 print('>> k = ', k, ', pass #', itr)
                 for x in I:
                     
@@ -80,7 +80,7 @@ def universal_perturbation(dataset, f, grads, delta=0.2, max_iter_uni = 10, xi=1
 
 
         # Compute the fooling rate
-        fooling_rate = fooling_rate_calc(v=v,dataset=dataset,f=f,batch_size=100)
+        fooling_rate = fooling_rate_calc(v=v,dataset=dataset,f=f,batch_size=batch_size)
         print("")
         print('FOOLING RATE = ', fooling_rate)
 
