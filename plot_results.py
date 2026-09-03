@@ -78,6 +78,52 @@ def _style_axes(ax, theme, xlabel, ylabel, title):
         ax.spines[side].set_visible(False)
 
 
+def _place_end_labels(ax, theme, entries, min_gap_pt=13.0):
+    """Write one direct label per series at its last point, nudged apart when they collide.
+
+    Series that finish at nearly the same value would otherwise print on top of each other,
+    which defeats the purpose of labelling them at all.
+    """
+    if not entries:
+        return
+    ordered = sorted(entries, key=lambda item: item[1])
+    transform = ax.transData
+    inverse = transform.inverted()
+
+    placed = []
+    for x, y, text, colour in ordered:
+        y_display = transform.transform((x, y))[1]
+        if placed and y_display - placed[-1] < min_gap_pt:
+            y_display = placed[-1] + min_gap_pt
+        placed.append(y_display)
+        y_data = inverse.transform((0, y_display))[1]
+        ax.annotate(
+            text,
+            (x, y),
+            xytext=(8, 0),
+            textcoords="offset points",
+            xycoords="data",
+            color=colour,
+            fontsize=9,
+            va="center",
+            annotation_clip=False,
+        )
+        if abs(y_data - y) > 1e-9:
+            # Re-place at the nudged height, keeping a light connector to the real point.
+            ax.texts[-1].remove()
+            ax.annotate(
+                text,
+                (x, y_data),
+                xytext=(8, 0),
+                textcoords="offset points",
+                xycoords="data",
+                color=colour,
+                fontsize=9,
+                va="center",
+                annotation_clip=False,
+            )
+
+
 def _series_points(entries, x_key, y_key):
     points = sorted((e[x_key], e[y_key]) for e in entries if e.get(y_key) is not None)
     return [p[0] for p in points], [p[1] * 100 for p in points]
@@ -86,6 +132,7 @@ def _series_points(entries, x_key, y_key):
 def plot_fooling_vs_images(results, theme, path):
     fig, ax = plt.subplots(figsize=(8.5, 5.2), dpi=160)
     models = _ordered_models(results)
+    end_labels = []
 
     for index, model in enumerate(models):
         colour = theme["series"][index % len(theme["series"])]
@@ -97,15 +144,7 @@ def plot_fooling_vs_images(results, theme, path):
         ax.plot(x, y, color=colour, linewidth=2, marker="o", markersize=6, label=model, zorder=3)
         ax.plot(xb, yb, color=colour, linewidth=1.4, linestyle=(0, (4, 3)), alpha=0.75, zorder=2)
         # Direct label: identity must not depend on colour alone.
-        ax.annotate(
-            model,
-            (x[-1], y[-1]),
-            textcoords="offset points",
-            xytext=(8, 0),
-            color=colour,
-            fontsize=9,
-            va="center",
-        )
+        end_labels.append((x[-1], y[-1], model, colour))
 
     _style_axes(
         ax,
@@ -128,6 +167,7 @@ def plot_fooling_vs_images(results, theme, path):
 def plot_margin_vs_images(results, theme, path):
     fig, ax = plt.subplots(figsize=(8.5, 5.2), dpi=160)
     models = _ordered_models(results)
+    end_labels = []
 
     for index, model in enumerate(models):
         colour = theme["series"][index % len(theme["series"])]
@@ -144,15 +184,7 @@ def plot_margin_vs_images(results, theme, path):
         x = [p[0] for p in points]
         y = [p[1] for p in points]
         ax.plot(x, y, color=colour, linewidth=2, marker="o", markersize=6, label=model, zorder=3)
-        ax.annotate(
-            model,
-            (x[-1], y[-1]),
-            textcoords="offset points",
-            xytext=(8, 0),
-            color=colour,
-            fontsize=9,
-            va="center",
-        )
+        end_labels.append((x[-1], y[-1], model, colour))
 
     ax.axhline(0, color=theme["text"], linewidth=1.2, alpha=0.55, zorder=1)
     ax.annotate(
@@ -178,6 +210,7 @@ def plot_margin_vs_images(results, theme, path):
     ax.set_xlim(left=13)
     ax.margins(x=0.24)  # room for the direct labels past the last point
     ax.legend(frameon=False, labelcolor=theme["muted"], fontsize=9, loc="upper left")
+    _place_end_labels(ax, theme, end_labels)
     fig.tight_layout()
     fig.subplots_adjust(right=0.87)
     fig.savefig(path, facecolor=theme["surface"])
@@ -187,6 +220,7 @@ def plot_margin_vs_images(results, theme, path):
 def plot_fooling_vs_multiplicity(results, theme, path):
     fig, ax = plt.subplots(figsize=(8.5, 5.2), dpi=160)
     models = _ordered_models(results)
+    end_labels = []
     plotted = False
 
     for index, model in enumerate(models):
@@ -204,15 +238,7 @@ def plot_fooling_vs_multiplicity(results, theme, path):
             ax.plot(
                 xb, yb, color=colour, linewidth=1.4, linestyle=(0, (4, 3)), alpha=0.75, zorder=2
             )
-        ax.annotate(
-            model,
-            (x[-1], y[-1]),
-            textcoords="offset points",
-            xytext=(8, 0),
-            color=colour,
-            fontsize=9,
-            va="center",
-        )
+        end_labels.append((x[-1], y[-1], model, colour))
 
     if not plotted:
         plt.close(fig)
@@ -228,7 +254,8 @@ def plot_fooling_vs_multiplicity(results, theme, path):
         f"Does attacking more classes per image help?  {subtitle}",
     )
     ax.set_xticks(range(0, 21, 2))
-    ax.margins(x=0.14)
+    ax.margins(x=0.20)
+    _place_end_labels(ax, theme, end_labels)
     ax.legend(frameon=False, labelcolor=theme["muted"], fontsize=9, loc="upper left")
     fig.tight_layout()
     fig.savefig(path, facecolor=theme["surface"])
