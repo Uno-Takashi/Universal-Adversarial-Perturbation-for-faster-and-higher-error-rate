@@ -15,6 +15,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
+    "keras-hub>=0.31.1",
     "matplotlib>=3.8",
     "numpy>=1.26",
     "pillow>=10.0",

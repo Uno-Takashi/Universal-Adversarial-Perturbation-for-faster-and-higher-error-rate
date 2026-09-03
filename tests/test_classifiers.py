@@ -14,10 +14,12 @@ import tensorflow as tf
 
 from classifiers import (
     AVAILABLE_MODELS,
+    KERAS_HUB_MODELS,
     KERAS_MODELS,
     Classifier,
     Inception5hClassifier,
     KerasClassifier,
+    KerasHubClassifier,
     _normalize_label,
     build_classifier,
 )
@@ -170,3 +172,57 @@ def test_inception_label_lookup_survives_out_of_range_ids(tmp_path):
 
     assert model.label(0) == "class_0"
     assert model.label(500) == "class_500"
+
+
+def test_keras_hub_models_cover_the_post_cnn_paradigms():
+    """The point of the KerasHub entries is architectural coverage, not more CNNs."""
+    paradigms = {paradigm for _, paradigm in KERAS_HUB_MODELS.values()}
+
+    assert "vision transformer" in paradigms
+    assert "hierarchical windowed transformer" in paradigms
+    assert any("distillation" in p for p in paradigms)
+
+
+def test_keras_hub_presets_are_imagenet_classifiers():
+    for name, (preset, _) in KERAS_HUB_MODELS.items():
+        assert isinstance(preset, str) and preset, name
+        assert "imagenet" in preset or "224" in preset, (name, preset)
+
+
+def test_keras_hub_classifier_rejects_unknown_names():
+    with pytest.raises(ValueError, match="Unknown KerasHub model"):
+        KerasHubClassifier("not-a-real-model")
+
+
+def test_available_models_lists_every_registry():
+    for name in KERAS_MODELS:
+        assert name in AVAILABLE_MODELS
+    for name in KERAS_HUB_MODELS:
+        assert name in AVAILABLE_MODELS
+    assert len(set(AVAILABLE_MODELS)) == len(AVAILABLE_MODELS), "duplicate model name"
+
+
+def test_build_classifier_routes_hub_names_to_the_hub_class(monkeypatch):
+    built = {}
+
+    def fake_init(self, name, preset=None):
+        built["name"] = name
+
+    monkeypatch.setattr(KerasHubClassifier, "__init__", fake_init)
+    result = build_classifier("vit_b16")
+
+    assert isinstance(result, KerasHubClassifier)
+    assert built["name"] == "vit_b16"
+
+
+def test_build_classifier_still_routes_applications_names(monkeypatch):
+    built = {}
+
+    def fake_init(self, name, weights="imagenet"):
+        built["name"] = name
+
+    monkeypatch.setattr(KerasClassifier, "__init__", fake_init)
+    result = build_classifier("resnet50")
+
+    assert isinstance(result, KerasClassifier)
+    assert built["name"] == "resnet50"

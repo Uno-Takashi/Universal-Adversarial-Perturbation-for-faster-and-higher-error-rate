@@ -262,11 +262,81 @@ class KerasClassifier(Classifier):
         return self._labels[int(np.ravel(index)[0])]
 
 
+# Architectures beyond the tf.keras.applications zoo, from KerasHub. These cover the
+# paradigms that followed the classic CNNs: a plain vision transformer, a hierarchical
+# windowed one, and a distillation-trained ViT.
+# name -> (KerasHub preset, human-readable paradigm)
+KERAS_HUB_MODELS = {
+    "vit_b16": ("vit_base_patch16_224_imagenet", "vision transformer"),
+    "swin_tiny": ("swin_tiny_patch4_window7_224", "hierarchical windowed transformer"),
+    "swin_base": ("swin_base_patch4_window7_224", "hierarchical windowed transformer"),
+    "deit_b16_distilled": (
+        "deit_base_distilled_patch16_224_imagenet",
+        "distillation-trained vision transformer",
+    ),
+    "mobilenet_v3_large": ("mobilenet_v3_large_100_imagenet", "efficient CNN"),
+    "resnet_vd_50_ssld": ("resnet_vd_50_ssld_imagenet", "distillation-trained CNN"),
+}
+
+
+class KerasHubClassifier(Classifier):
+    """An ImageNet classifier from KerasHub, covering the post-CNN architectures.
+
+    KerasHub ships preprocessing as a separate object rather than folding it into the model,
+    which suits this project: the preprocessor is applied inside :meth:`_forward`, so
+    gradients still reach the raw pixels.
+    """
+
+    num_classes = 1000
+
+    def __init__(self, name, preset=None):
+        if preset is None:
+            if name not in KERAS_HUB_MODELS:
+                raise ValueError(
+                    f"Unknown KerasHub model {name!r}. Available: {sorted(KERAS_HUB_MODELS)}"
+                )
+            preset = KERAS_HUB_MODELS[name][0]
+
+        try:
+            from keras_hub.models import ImageClassifier
+        except ImportError as exc:  # pragma: no cover - depends on the install
+            raise ImportError(
+                "keras-hub is required for this model; install it with `uv sync`."
+            ) from exc
+
+        # activation=None: DeepFool needs pre-softmax logits.
+        self._model = ImageClassifier.from_preset(preset, activation=None)
+        self._preprocessor = self._model.preprocessor
+        # Detach it so calling the model does not preprocess twice.
+        self._model.preprocessor = None
+        self.name = name
+        self.preset = preset
+        self.image_size = tuple(getattr(self._preprocessor, "image_size", (224, 224)))
+        self._labels = None
+
+    def _forward(self, raw_batch):
+        return self._model(self._preprocessor(raw_batch))
+
+    def label(self, index):
+        if self._labels is None:
+            path = tf.keras.utils.get_file("imagenet_class_index.json", KERAS_CLASS_INDEX_URL)
+            with open(path) as fh:
+                mapping = json.load(fh)
+            self._labels = [mapping[str(i)][1] for i in range(len(mapping))]
+        return self._labels[int(np.ravel(index)[0])]
+
+
 def build_classifier(name, data_dir="data"):
-    """Build a classifier by name: ``inception5h`` or any key of :data:`KERAS_MODELS`."""
+    """Build a classifier by name.
+
+    Accepts ``inception5h``, any key of :data:`KERAS_MODELS`, or any key of
+    :data:`KERAS_HUB_MODELS`.
+    """
     if name == "inception5h":
         return Inception5hClassifier(data_dir=data_dir)
+    if name in KERAS_HUB_MODELS:
+        return KerasHubClassifier(name)
     return KerasClassifier(name)
 
 
-AVAILABLE_MODELS = ("inception5h", *KERAS_MODELS)
+AVAILABLE_MODELS = ("inception5h", *KERAS_MODELS, *KERAS_HUB_MODELS)
