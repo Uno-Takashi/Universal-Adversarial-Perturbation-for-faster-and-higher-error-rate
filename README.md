@@ -24,10 +24,10 @@ parameter, `search_num` in the code — which reaches a higher fooling rate from
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then:
 
 ```bash
-# CPU, or any machine that already has CUDA and cuDNN installed system-wide
+# CPU only
 uv sync
 
-# NVIDIA GPU without a system CUDA install: pulls the CUDA libraries as wheels
+# NVIDIA GPU
 uv sync --extra cuda
 ```
 
@@ -35,10 +35,24 @@ uv sync --extra cuda
 `uv run` to use it, or activate it with `source .venv/bin/activate`.
 
 > [!IMPORTANT]
-> If you use the `cuda` extra, pass it to `uv run` as well (`uv run --extra cuda python ...`) or set
-> `UV_NO_SYNC=1`. A bare `uv run` re-syncs the environment to the default extras and uninstalls the
-> CUDA wheels. This does not apply inside the dev container, which gets CUDA from its base image and
-> so needs no extra.
+> With the `cuda` extra, pass it to `uv run` too — `uv run --extra cuda python experiment.py …` —
+> or set `UV_NO_SYNC=1`. A bare `uv run` re-syncs to the default extras and uninstalls the CUDA
+> wheels. Inside the dev container none of this applies: CUDA comes from the base image.
+
+### Check that the GPU is actually being used
+
+TensorFlow falls back to the CPU with nothing but a one-line warning, and the run then takes
+several times longer for no visible reason. Confirm before a long run:
+
+```bash
+uv run --extra cuda python -c "import classifiers, tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+```
+
+An empty list means the CUDA libraries were not found. [`gpu_support.py`](gpu_support.py) loads the
+ones shipped by the `cuda` extra before TensorFlow imports, which covers the usual case; set
+`UAP_DISABLE_CUDA_PRELOAD=1` to switch that off. A system CUDA install does *not* automatically
+work — it has to be a version TensorFlow supports (CUDA 12.x for TF 2.21; CUDA 13 is too new), which
+is why the `cuda` extra, carrying its own CUDA 12 wheels, is the reliable route.
 
 ### Dev container
 
@@ -97,17 +111,24 @@ It prints a table per run and, with `--out DIR`, saves each perturbation as `.np
 `summary.json`:
 
 ```
-model               M  images   clean    fool  fool(clip)    sec
-----------------------------------------------------------------
-inception5h         3       8   75.0%   87.5%       87.5%      7
-mobilenet_v2        3       8   72.0%  100.0%      100.0%      7
-resnet50            3       8   87.5%  100.0%      100.0%     18
+model               M  gen  val   clean  gen fool  val fool  random    sec
+--------------------------------------------------------------------------
+mobilenet_v2        5  128  200   68.5%     86.7%     31.0%   27.2%     40
 ```
 
-`fool` is the fraction of images whose predicted label changes — the criterion the algorithm
-optimises. `fool(clip)` is the same measure after clipping the perturbed image back into
-`[0, 255]`, i.e. for images that are still valid pictures. `--transfer` additionally evaluates every
-perturbation against the other models of matching input size.
+The perturbation is fitted on `gen` images and scored on a disjoint set of `val` images.
+
+- **`gen fool`** — fooling rate on the images it was fitted to. This restates the algorithm's own
+  stopping criterion, so it says nothing about whether the perturbation generalises. It is shown
+  only to expose the gap.
+- **`val fool`** — fooling rate on held-out images. This is the number that matters.
+- **`random`** — fooling rate of a random sign perturbation at the same l_inf budget, averaged over
+  three draws. Some fraction of predictions flips under *any* perturbation of this size, so
+  `val fool` is only meaningful relative to this floor.
+
+A perturbation is universal to the extent that **`val fool` exceeds `random`**. `--transfer`
+additionally evaluates every perturbation against the other models of matching input size, using
+their held-out images.
 
 ### Supported models
 
@@ -127,7 +148,9 @@ To add your own, subclass [`classifiers.Classifier`](classifiers.py) and impleme
 ### Datasets
 
 Images come from the Hugging Face dataset viewer, so only the images you ask for are fetched — a
-50-image run downloads 50 images, not a multi-hundred-megabyte shard.
+50-image run downloads 50 images, not a multi-hundred-megabyte shard. They are fetched in parallel
+(about 30/s) and cached under `.cache/imagenet`, so repeating a request is instant and models that
+share an input resolution reuse one download. `UAP_IMAGE_CACHE` moves the cache.
 
 | Shorthand | Dataset | Note |
 |---|---|---|
@@ -179,6 +202,7 @@ call — a frozen `GraphDef` has no other TF2 entry point — and
 | [`universal_pert.py`](universal_pert.py) | the universal perturbation algorithm |
 | [`classifiers.py`](classifiers.py) | model abstraction and implementations |
 | [`imagenet_source.py`](imagenet_source.py) | image loading from Hugging Face or disk |
+| [`gpu_support.py`](gpu_support.py) | makes TensorFlow find the CUDA libraries from the `cuda` extra |
 | [`experiment.py`](experiment.py) | experiment driver and reporting |
 | [`util_univ.py`](util_univ.py) | fooling-rate metrics and clipping helpers |
 | [`prepare_imagenet_data.py`](prepare_imagenet_data.py) | legacy mean-subtraction preprocessing helpers |

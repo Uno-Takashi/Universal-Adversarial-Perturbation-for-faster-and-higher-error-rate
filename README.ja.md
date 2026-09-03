@@ -50,10 +50,10 @@ uv run python experiment.py --models mobilenet_v2 --search-num 1 3 5 10
 [uv をインストール](https://docs.astral.sh/uv/getting-started/installation/)した上で:
 
 ```bash
-# CPU、または CUDA と cuDNN がシステムに入っている環境
+# CPU のみ
 uv sync
 
-# システムに CUDA が無い GPU 環境（CUDA ライブラリを wheel として取得）
+# NVIDIA GPU
 uv sync --extra cuda
 ```
 
@@ -61,10 +61,27 @@ uv sync --extra cuda
 コマンドは `uv run` を前置するか、`source .venv/bin/activate` で有効化してください。
 
 > [!IMPORTANT]
-> `cuda` extra を使う場合は `uv run` にも渡してください（`uv run --extra cuda python ...`）。
+> `cuda` extra を使う場合は `uv run` にも渡してください（`uv run --extra cuda python experiment.py …`）。
 > あるいは `UV_NO_SYNC=1` を設定してください。素の `uv run` は既定の extra に再 sync するため
 > CUDA wheel をアンインストールします。dev container 内ではベースイメージが CUDA を提供するため
 > extra 自体が不要で、この問題は起きません。
+
+### GPU が実際に使われているかの確認
+
+TensorFlow は CUDA ライブラリを見つけられなくても警告1行を出すだけで CPU にフォールバックします。
+実行は数倍遅くなりますが、見た目には分かりません。長時間の実行前に必ず確認してください:
+
+```bash
+uv run --extra cuda python -c "import classifiers, tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+```
+
+空のリストが返る場合、CUDA ライブラリが見つかっていません。[`gpu_support.py`](gpu_support.py) が
+`cuda` extra 同梱のライブラリを TensorFlow の import 前に読み込むため通常はこれで解決します。
+無効化するには `UAP_DISABLE_CUDA_PRELOAD=1` を設定してください。
+
+なお**システムに CUDA が入っていても自動的には使えません**。TensorFlow が対応するバージョンである
+必要があります（TF 2.21 は CUDA 12 系。CUDA 13 は新しすぎて読み込めません）。CUDA 12 の wheel を
+自前で持つ `cuda` extra のほうが確実です。
 
 ### Dev container
 
@@ -121,17 +138,21 @@ uv run python experiment.py --dataset /datasets2/ILSVRC2012/train --num-images 5
 実行ごとに表を出力し、`--out DIR` を付けると各摂動を `.npy` として `summary.json` とともに保存します:
 
 ```
-model               M  images   clean    fool  fool(clip)    sec
-----------------------------------------------------------------
-inception5h         3       8   75.0%   87.5%       87.5%      7
-mobilenet_v2        3       8   72.0%  100.0%      100.0%      7
-resnet50            3       8   87.5%  100.0%      100.0%     18
+model               M  gen  val   clean  gen fool  val fool  random    sec
+--------------------------------------------------------------------------
+mobilenet_v2        5  128  200   68.5%     86.7%     31.0%   27.2%     40
 ```
 
-`fool` は予測ラベルが変化した画像の割合で、アルゴリズムが最適化する基準そのものです。
-`fool(clip)` は摂動後の画像を `[0, 255]` にクリップしたうえでの同じ指標、つまり画像として妥当な
-範囲に収めた場合の値です。`--transfer` を付けると、各摂動を入力サイズが一致する他モデルに対しても
-評価します。
+摂動は `gen` 枚で生成し、それとは重ならない `val` 枚で評価します。
+
+- **`gen fool`** — 生成に使った画像上の fooling rate。これはアルゴリズムの停止条件の再掲であり、
+  **汎化の証拠にはなりません**。ギャップを可視化するためだけに表示しています。
+- **`val fool`** — held-out 画像上の fooling rate。意味があるのはこちらです。
+- **`random`** — 同じ l∞ 予算のランダム符号摂動の fooling rate（3回平均）。この大きさの摂動なら
+  何であれ一定割合の予測は変化するため、`val fool` はこの下限との相対でしか解釈できません。
+
+摂動が universal と言えるのは **`val fool` が `random` を上回る範囲においてのみ**です。
+`--transfer` を付けると、各摂動を入力サイズが一致する他モデルの held-out 画像に対しても評価します。
 
 ### 対応モデル
 
@@ -152,7 +173,9 @@ resnet50            3       8   87.5%  100.0%      100.0%     18
 ### データセット
 
 画像は Hugging Face の dataset viewer 経由で取得するため、要求した枚数だけがダウンロードされます。
-50枚の実験なら数百 MB のシャードではなく50枚分だけです。
+50枚の実験なら数百 MB のシャードではなく50枚分だけです。取得は並列（毎秒約30枚）で、`.cache/imagenet`
+にキャッシュされます。同じ要求の再実行は即座に終わり、入力解像度が同じモデル同士は1回の
+ダウンロードを共有します。キャッシュ位置は `UAP_IMAGE_CACHE` で変更できます。
 
 | 短縮名 | データセット | 備考 |
 |---|---|---|
@@ -203,6 +226,7 @@ session・placeholder・feed dict は存在せず、`tf.while_loop` による手
 | [`universal_pert.py`](universal_pert.py) | Universal Adversarial Perturbation のアルゴリズム |
 | [`classifiers.py`](classifiers.py) | モデル抽象と実装 |
 | [`imagenet_source.py`](imagenet_source.py) | Hugging Face またはディスクからの画像読み込み |
+| [`gpu_support.py`](gpu_support.py) | `cuda` extra の CUDA ライブラリを TensorFlow に見つけさせる |
 | [`experiment.py`](experiment.py) | 実験ドライバと結果報告 |
 | [`util_univ.py`](util_univ.py) | fooling rate の指標とクリッピング補助 |
 | [`prepare_imagenet_data.py`](prepare_imagenet_data.py) | 旧来の平均引き前処理の補助関数 |
