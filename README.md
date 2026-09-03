@@ -1,27 +1,96 @@
 # Universal adversarial perturbations for fast and high error rate
 
-This repos extended [Universal Adversarial Perturbation](https://github.com/LTS4/universal) to fast and high error rate in small data.
+[![CI](https://github.com/Uno-Takashi/Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate/actions/workflows/ci.yml/badge.svg)](https://github.com/Uno-Takashi/Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate/actions/workflows/ci.yml)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-Only Python3.x ver included.
+This repo extends [Universal Adversarial Perturbation](https://github.com/LTS4/universal) to reach a high error rate quickly from a small amount of data.
 
-*python*: Python3.x code to generate universal perturbations using [TensorFlow](https://github.com/tensorflow/tensorflow).Required library is written `requirements.txt` .
+Python code to generate universal perturbations using [TensorFlow](https://github.com/tensorflow/tensorflow). Dependencies are declared in `pyproject.toml` and locked in `uv.lock`.
+
+## Requirements
+
+- Python 3.11 - 3.13
+- [uv](https://docs.astral.sh/uv/) for dependency management
+- An NVIDIA GPU is optional; TensorFlow falls back to the CPU
+
+## Setup
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then:
+
+```bash
+# CPU
+uv sync
+
+# NVIDIA GPU (installs tensorflow[and-cuda])
+uv sync --extra cuda
+```
+
+`uv sync` creates `.venv` and installs the exact versions from `uv.lock`. Prefix commands with
+`uv run` to use it, or activate it with `source .venv/bin/activate`.
+
+### Dev container
+
+A [dev container](https://containers.dev/) is provided in [`.devcontainer/`](.devcontainer/). It is
+built on `nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04` and declares
+`"hostRequirements": { "gpu": "optional" }`, so it uses the GPU when the host exposes one and runs
+on the CPU otherwise. "Reopen in Container" from VS Code runs `uv sync --extra cuda --group dev`
+and reports whether TensorFlow can see a GPU.
+
+GPU passthrough additionally requires, on the host, a recent NVIDIA driver, the
+[NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html),
+and Docker configured with the `nvidia` runtime. On WSL2 install the driver on Windows (not inside
+WSL) and enable GPU support in Docker Desktop.
 
 ## Usage
 
 ### Get started
 
-To get started, you can run the demo code to apply a pre-computed universal perturbation for Inception on the image of your choice
+To get started, you can run the demo code to apply a pre-computed universal perturbation for Inception on the image of your choice:
+
+```bash
+uv run python demo_inception.py -i data/test_img.png
 ```
-python demo_inception.py -i data/test_img.png	
-```
+
 This will download the pre-trained model, and show the image without and with universal perturbation with the estimated labels.
-In this example, the pre-computed targeted universal perturbation in `data/universal.npy` is used. This Perturbation targeted kit fox class.
+In this example, the pre-computed targeted universal perturbation in `data/universal.npy` is used. This perturbation targets the kit fox class.
+
+> [!NOTE]
+> `data/universal.npy` is not committed to this repository. When it is absent, `demo_inception.py`
+> computes a perturbation instead, which needs an ImageNet training set at the path given by `-t`
+> (`/datasets2/ILSVRC2012/train` by default).
 
 ### Computing a universal perturbation for your model
 
-To compute a universal perturbation for your model, please follow the same struture as in `demo_inception.py`.
-In particular, you should use the `universal_perturbation` function (see `universal_pert.py` for details), with the set of training images 
+To compute a universal perturbation for your model, please follow the same structure as in `demo_inception.py`.
+In particular, you should use the `universal_perturbation` function (see `universal_pert.py` for details), with the set of training images
 used to compute the perturbation, as well as the feedforward and gradient functions.
+
+## Development
+
+```bash
+uv sync --group dev        # install the dev tooling
+uv run ruff check .        # lint
+uv run ruff format .       # format
+uv run pytest              # run the test suite
+```
+
+Linting, formatting, the test suite (Python 3.11/3.12/3.13), the lockfile, and the package build
+all run on every push and pull request against `main`; see
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml).
+
+## Releasing
+
+Releases are cut from a tag. Bump `version` in `pyproject.toml`, then:
+
+```bash
+git tag v0.2.0
+git push origin v0.2.0
+```
+
+[`.github/workflows/release.yml`](.github/workflows/release.yml) verifies that the tag matches the
+project version, runs the tests, builds the sdist and wheel, and publishes a GitHub Release with
+those artifacts attached. Publishing to PyPI is opt-in: set the repository variable
+`PUBLISH_TO_PYPI` to `true` and configure PyPI trusted publishing for the `pypi` environment.
 
 
 ## Reference

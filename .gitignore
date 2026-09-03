@@ -345,3 +345,24 @@ imagenet_data.npy
 imagenet_vals_data.npy
 inception5h.zip
 tensorflow_inception_graph.pb
+###############################################################################
+# Python / uv tooling
+###############################################################################
+.venv/
+venv/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+###############################################################################
+# Model and dataset artifacts downloaded or generated at runtime
+###############################################################################
+data/imagenet_data.npy
+data/inception5h.zip
+data/tensorflow_inception_graph.pb

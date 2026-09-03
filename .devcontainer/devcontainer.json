@@ -1,0 +1,48 @@
+{
+  "name": "Universal Adversarial Perturbation (CUDA)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "CUDA_IMAGE": "nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04",
+      "UV_VERSION": "0.12.5"
+    }
+  },
+  "remoteUser": "vscode",
+  "workspaceFolder": "/workspaces/Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate",
+
+  // Requests an NVIDIA GPU when the host has one, and falls back to CPU when it does not.
+  "hostRequirements": {
+    "gpu": "optional"
+  },
+
+  "containerEnv": {
+    "UV_PROJECT_ENVIRONMENT": "/workspaces/Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate/.venv"
+  },
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "charliermarsh.ruff",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        "editor.formatOnSave": true,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
+          }
+        }
+      }
+    }
+  }
+}
