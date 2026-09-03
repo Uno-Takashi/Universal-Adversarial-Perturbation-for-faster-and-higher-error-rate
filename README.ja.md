@@ -106,10 +106,10 @@ Inception 5h モデルをダウンロードし、Universal Adversarial Perturbat
 
 ```bash
 # 単一モデル
-uv run python experiment.py --models inception5h --num-images 20
+uv run python experiment.py --models inception5h --num-images 100
 
 # Inception 以外でも有効か確認する
-uv run python experiment.py --models inception5h mobilenet_v2 resnet50 --num-images 20 --transfer
+uv run python experiment.py --models inception5h mobilenet_v2 resnet50 --num-images 100 --transfer
 
 # 多重度 M の掃引
 uv run python experiment.py --models mobilenet_v2 --search-num 1 3 5 10

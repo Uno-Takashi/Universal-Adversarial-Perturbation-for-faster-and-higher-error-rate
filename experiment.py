@@ -56,25 +56,56 @@ def evaluate(model, dataset, v, batch_size):
     }
 
 
+def random_baseline(model, dataset, shape, xi, batch_size, seed=0, repeats=3):
+    """Fooling rate of a random sign perturbation at the same l_inf budget.
+
+    Without this, a held-out fooling rate is uninterpretable: some fraction of predictions
+    flips under *any* perturbation of this magnitude. A universal perturbation is only
+    interesting to the extent it beats this number. The signs are saturated to +/-xi because
+    that is the structure the projected algorithm produces.
+    """
+    rng = np.random.default_rng(seed)
+    rates = [
+        fooling_rate_calc(
+            rng.choice([-xi, xi], size=shape).astype(np.float32),
+            dataset,
+            model,
+            batch_size=batch_size,
+            clip=True,
+        )
+        for _ in range(repeats)
+    ]
+    return float(np.mean(rates))
+
+
 def run_one(model_name, args, search_num):
     model = build_classifier(model_name)
     print(f"\n=== {model_name} (input {model.image_size}, {model.num_classes} classes) ===")
 
-    dataset, labels = load_images(
+    # One draw, split disjointly: the perturbation is fitted on `gen` and scored on `val`.
+    # Evaluating on `gen` alone would just report the algorithm's own stopping criterion.
+    images, labels = load_images(
         args.dataset,
-        num_images=args.num_images,
+        num_images=args.num_images + args.num_val_images,
         image_size=model.image_size,
         seed=args.seed,
     )
-    print(f">> {len(dataset)} images loaded from {args.dataset}")
+    if len(images) < args.num_images + args.num_val_images:
+        raise ValueError(
+            f"asked for {args.num_images} + {args.num_val_images} images, got {len(images)}"
+        )
+    gen = np.array(images[: args.num_images])
+    val = np.array(images[args.num_images :])
+    val_labels = labels[args.num_images :] if labels.size else labels
+    print(f">> {len(gen)} generation + {len(val)} validation images from {args.dataset}")
 
-    accuracy = top1_accuracy(model, dataset, labels, args.batch_size)
+    accuracy = top1_accuracy(model, val, val_labels, args.batch_size)
     if accuracy is not None:
-        print(f">> clean top-1 accuracy: {accuracy:.1%}")
+        print(f">> clean top-1 accuracy on validation: {accuracy:.1%}")
 
     started = time.perf_counter()
     v = universal_perturbation(
-        dataset,
+        gen,
         model,
         model.gradients,
         delta=args.delta,
@@ -87,22 +118,32 @@ def run_one(model_name, args, search_num):
     )
     elapsed = time.perf_counter() - started
 
+    train_rates = evaluate(model, gen, v, args.batch_size)
+    val_rates = evaluate(model, val, v, args.batch_size)
+    baseline = random_baseline(model, val, np.shape(v), args.xi, args.batch_size, seed=args.seed)
+
     result = {
         "model": model_name,
         "search_num": search_num,
-        "num_images": len(dataset),
+        "num_images": len(gen),
+        "num_val_images": len(val),
         "xi": args.xi,
         "delta": args.delta,
         "image_size": list(model.image_size),
-        "clean_top1": accuracy,
+        "clean_top1_val": accuracy,
         "seconds": round(elapsed, 1),
         "perturbation_linf": float(np.max(np.abs(v))),
-        **evaluate(model, dataset, v, args.batch_size),
+        "train_fooling_rate": train_rates["fooling_rate"],
+        "train_fooling_rate_clipped": train_rates["fooling_rate_clipped"],
+        "val_fooling_rate": val_rates["fooling_rate"],
+        "val_fooling_rate_clipped": val_rates["fooling_rate_clipped"],
+        "val_random_baseline_clipped": baseline,
     }
 
     print(
-        f">> fooling rate {result['fooling_rate']:.1%} "
-        f"(clipped {result['fooling_rate_clipped']:.1%}) "
+        f">> generation set {train_rates['fooling_rate_clipped']:.1%} "
+        f"| validation {val_rates['fooling_rate_clipped']:.1%} "
+        f"| random baseline {baseline:.1%} "
         f"| l_inf {result['perturbation_linf']:.2f} | {elapsed:.0f}s"
     )
 
@@ -110,11 +151,11 @@ def run_one(model_name, args, search_num):
         os.makedirs(args.out, exist_ok=True)
         np.save(os.path.join(args.out, f"universal_{model_name}_M{search_num}.npy"), v)
 
-    return result, model, dataset, v
+    return result, model, val, v
 
 
 def run_transfer(entries, batch_size):
-    """Evaluate each perturbation against every other model that shares its input size."""
+    """Evaluate each perturbation on the other models, using their held-out images."""
     rows = []
     for source_name, (_, _, _, v) in entries.items():
         for target_name, (_, target_model, target_dataset, _) in entries.items():
@@ -132,17 +173,25 @@ def run_transfer(entries, batch_size):
 
 
 def print_table(results):
-    header = (
-        f"{'model':<18}{'M':>3}{'images':>8}{'clean':>8}{'fool':>8}{'fool(clip)':>12}{'sec':>7}"
+    columns = (
+        f"{'model':<18}{'M':>3}{'gen':>5}{'val':>5}{'clean':>8}"
+        f"{'gen fool':>10}{'val fool':>10}{'random':>8}{'sec':>7}"
     )
-    print("\n" + header)
-    print("-" * len(header))
+    print("\n" + columns)
+    print("-" * len(columns))
     for r in results:
-        clean = f"{r['clean_top1']:.1%}" if r["clean_top1"] is not None else "-"
+        clean = f"{r['clean_top1_val']:.1%}" if r["clean_top1_val"] is not None else "-"
         print(
-            f"{r['model']:<18}{r['search_num']:>3}{r['num_images']:>8}{clean:>8}"
-            f"{r['fooling_rate']:>8.1%}{r['fooling_rate_clipped']:>12.1%}{r['seconds']:>7.0f}"
+            f"{r['model']:<18}{r['search_num']:>3}{r['num_images']:>5}{r['num_val_images']:>5}"
+            f"{clean:>8}{r['train_fooling_rate_clipped']:>10.1%}"
+            f"{r['val_fooling_rate_clipped']:>10.1%}"
+            f"{r['val_random_baseline_clipped']:>8.1%}{r['seconds']:>7.0f}"
         )
+    print(
+        "\n'gen fool' is measured on the images the perturbation was fitted to, so it "
+        "restates\nthe algorithm's own stopping criterion. Only 'val fool' minus 'random' "
+        "says whether\nthe perturbation is universal."
+    )
 
 
 def parse_args():
@@ -161,7 +210,18 @@ def parse_args():
         default=DEFAULT_DATASET,
         help="Hugging Face dataset id/shorthand, or a local ILSVRC-style directory",
     )
-    parser.add_argument("--num-images", type=int, default=20)
+    parser.add_argument(
+        "--num-images",
+        type=int,
+        default=100,
+        help="images the perturbation is fitted to; below ~100 it overfits and does not generalise",
+    )
+    parser.add_argument(
+        "--num-val-images",
+        type=int,
+        default=200,
+        help="held-out images the perturbation is scored on (disjoint from --num-images)",
+    )
     parser.add_argument(
         "--search-num",
         nargs="+",
@@ -192,10 +252,11 @@ def main():
     entries = {}
     for model_name in args.models:
         for search_num in args.search_num:
-            result, model, dataset, v = run_one(model_name, args, search_num)
+            result, model, val, v = run_one(model_name, args, search_num)
             results.append(result)
             if search_num == args.search_num[-1]:
-                entries[model_name] = (result, model, dataset, v)
+                # Transfer is scored on held-out images too.
+                entries[model_name] = (result, model, val, v)
 
     print_table(results)
 

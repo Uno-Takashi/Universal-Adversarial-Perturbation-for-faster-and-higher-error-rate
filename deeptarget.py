@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def deeptarget(image, f, grads, overshoot=0.02, max_iter=50, target=None):
+def deeptarget(image, f, grads, overshoot=0.02, max_iter=50, target=None, logits=None):
     """Find a perturbation that pushes the classifier towards ``target``.
 
     :param image: Image of size HxWx3
@@ -10,13 +10,18 @@ def deeptarget(image, f, grads, overshoot=0.02, max_iter=50, target=None):
     :param overshoot: used as a termination criterion to prevent vanishing updates (default = 0.02)
     :param max_iter: maximum number of iterations for deeptarget (default = 50)
     :param target: index of the class the perturbation should aim for (required)
+    :param logits: ``f(image)`` when the caller already has it. Callers that attack the same
+        image with several targets would otherwise pay for the same forward pass once per
+        target; passing it in is exactly equivalent and skips that work.
     :return: minimal perturbation that fools the classifier, number of iterations that it
         required, new estimated_label and perturbed image
     """
     if target is None:
         raise ValueError("Target is not enough")
 
-    f_image = np.array(f(image)).flatten()
+    # The original code called f(image) twice here -- once for f_image and once for f_i on the
+    # still-unperturbed pert_image -- which are the same array by construction.
+    f_image = np.asarray(logits if logits is not None else f(image)).flatten()
     order = f_image.argsort()[::-1]
 
     order = order[0:2]
@@ -26,7 +31,7 @@ def deeptarget(image, f, grads, overshoot=0.02, max_iter=50, target=None):
     input_shape = image.shape
     pert_image = image
 
-    f_i = np.array(f(pert_image)).flatten()
+    f_i = f_image
     k_i = int(np.argmax(f_i))
 
     r_tot = np.zeros(input_shape)

@@ -81,10 +81,10 @@ with nothing but `uv sync`.
 
 ```bash
 # One model
-uv run python experiment.py --models inception5h --num-images 20
+uv run python experiment.py --models inception5h --num-images 100
 
 # Does the algorithm generalise past Inception?
-uv run python experiment.py --models inception5h mobilenet_v2 resnet50 --num-images 20 --transfer
+uv run python experiment.py --models inception5h mobilenet_v2 resnet50 --num-images 100 --transfer
 
 # Sweep the multiplicity M
 uv run python experiment.py --models mobilenet_v2 --search-num 1 3 5 10
