@@ -4,9 +4,11 @@ set -euo pipefail
 
 echo "==> uv $(uv --version)"
 
-# Install the project with the CUDA-enabled TensorFlow build plus the dev tooling.
-# On a machine without an NVIDIA GPU this still works: the CUDA wheels install but stay unused.
-uv sync --extra cuda --group dev
+# The base image already provides CUDA and cuDNN system-wide, so the plain `tensorflow`
+# wheel finds them and uses the GPU. The `cuda` extra (tensorflow[and-cuda]) is therefore
+# not needed here -- it would add ~4 GB of duplicate CUDA wheels, and any later bare
+# `uv run` would strip them again, since uv resyncs to the default extras.
+uv sync --group dev
 
 echo
 echo "==> GPU visibility"

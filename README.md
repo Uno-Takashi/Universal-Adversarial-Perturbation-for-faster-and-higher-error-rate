@@ -18,23 +18,32 @@ Python code to generate universal perturbations using [TensorFlow](https://githu
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then:
 
 ```bash
-# CPU
+# CPU, or any machine that already has CUDA and cuDNN installed system-wide
 uv sync
 
-# NVIDIA GPU (installs tensorflow[and-cuda])
+# NVIDIA GPU without a system CUDA install: pulls the CUDA libraries as wheels
 uv sync --extra cuda
 ```
 
 `uv sync` creates `.venv` and installs the exact versions from `uv.lock`. Prefix commands with
 `uv run` to use it, or activate it with `source .venv/bin/activate`.
 
+> [!IMPORTANT]
+> If you use the `cuda` extra, pass it to `uv run` as well (`uv run --extra cuda python ...`) or
+> set `UV_NO_SYNC=1`. A bare `uv run` re-syncs the environment to the default extras and
+> uninstalls the CUDA wheels. This does not apply inside the dev container, which gets CUDA from
+> its base image and so needs no extra.
+
 ### Dev container
 
 A [dev container](https://containers.dev/) is provided in [`.devcontainer/`](.devcontainer/). It is
 built on `nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04` and declares
 `"hostRequirements": { "gpu": "optional" }`, so it uses the GPU when the host exposes one and runs
-on the CPU otherwise. "Reopen in Container" from VS Code runs `uv sync --extra cuda --group dev`
-and reports whether TensorFlow can see a GPU.
+on the CPU otherwise. "Reopen in Container" from VS Code runs `uv sync --group dev` and reports
+whether TensorFlow can see a GPU.
+
+The base image supplies CUDA 12.6 and cuDNN system-wide, so the plain `tensorflow` wheel picks
+them up; the `cuda` extra is only for GPU machines *outside* the container.
 
 GPU passthrough additionally requires, on the host, a recent NVIDIA driver, the
 [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html),
