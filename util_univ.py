@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-from prepare_imagenet_data import undo_image_avg, undo_image_list
+from prepare_imagenet_data import undo_image_avg
 
 
 def visualization_pert(v):
@@ -36,7 +36,7 @@ def avg_add_clip_pert(avg_img, v):
     return pert_img
 
 
-def _batched_labels(f, dataset, batch_size, undo_avg=False):
+def _batched_labels(f, dataset, batch_size):
     """Return the estimated label of every image in ``dataset``, computed batch by batch."""
     num_images = np.shape(dataset)[0]
     est_labels = np.zeros(num_images)
@@ -45,20 +45,29 @@ def _batched_labels(f, dataset, batch_size, undo_avg=False):
     for ii in range(num_batches):
         m = ii * batch_size
         upper = min((ii + 1) * batch_size, num_images)
-        batch = dataset[m:upper, :, :, :]
-        if undo_avg:
-            batch = undo_image_list(batch)
-        est_labels[m:upper] = np.argmax(f(batch), axis=1).flatten()
+        est_labels[m:upper] = np.argmax(f(dataset[m:upper, :, :, :]), axis=1).flatten()
 
     return est_labels
 
 
-def fooling_rate_calc(v, dataset, f, batch_size=100):
-    dataset_perturbed = dataset + v
+def clip_perturbed(dataset, v, value_range=(0, 255)):
+    """Add ``v`` to ``dataset`` and clip back into the displayable pixel range."""
+    return np.clip(dataset + v, *value_range)
+
+
+def fooling_rate_calc(v, dataset, f, batch_size=100, clip=False):
+    """Fraction of images whose predicted label changes once ``v`` is added.
+
+    ``dataset`` and ``f`` must agree on the input convention; with
+    :mod:`classifiers` both are raw ``[0, 255]`` RGB. ``clip=False`` matches the criterion
+    :func:`universal_pert.universal_perturbation` optimises against; ``clip=True`` measures
+    the rate for images that are still valid pictures.
+    """
+    perturbed = clip_perturbed(dataset, v) if clip else dataset + v
     num_images = np.shape(dataset)[0]
 
-    est_labels_orig = _batched_labels(f, dataset, batch_size, undo_avg=True)
-    est_labels_pert = _batched_labels(f, dataset_perturbed, batch_size, undo_avg=True)
+    est_labels_orig = _batched_labels(f, dataset, batch_size)
+    est_labels_pert = _batched_labels(f, perturbed, batch_size)
 
     return float(np.sum(est_labels_pert != est_labels_orig) / float(num_images))
 

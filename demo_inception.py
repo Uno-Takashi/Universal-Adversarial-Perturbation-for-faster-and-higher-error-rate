@@ -1,46 +1,30 @@
+"""Apply a universal adversarial perturbation to one image, using Inception 5h.
+
+This is the original demo, ported to TF2: the model is loaded once as an eager callable (see
+:mod:`classifiers`) and there is no session, placeholder or feed dict anywhere. Images are
+raw ``[0, 255]`` RGB throughout, which leaves ``data/universal.npy`` valid -- the mean
+subtraction it used to be expressed against is a shift, so it does not change a perturbation.
+"""
+
 import argparse
 import os.path
-import zipfile
-from urllib.request import urlretrieve
 
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
 
-from prepare_imagenet_data import create_imagenet_npy, preprocess_image_batch, undo_image_avg
+from classifiers import Inception5hClassifier
+from imagenet_source import load_images, resize_and_crop
 from universal_pert import universal_perturbation
-from util_univ import avg_add_clip_pert, cat2label_str
+from util_univ import clip_perturbed
 
-# The Inception 5h graph is a TensorFlow 1.x frozen GraphDef, so it is driven through
-# the compat.v1 session API rather than eager execution.
-tf.compat.v1.disable_eager_execution()
-
-DEVICE = "/gpu:0"
 NUM_CLASSES = 2
-INCEPTION_URL = "https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip"
 
 
-def jacobian(y_flat, x, inds):
-    n = NUM_CLASSES  # Not really necessary, just a quick fix.
-    loop_vars = [
-        tf.constant(0, tf.int32),
-        tf.TensorArray(tf.float32, size=n),
-    ]
-    _, jacobian_stack = tf.while_loop(
-        lambda j, _: j < n,
-        lambda j, result: (j + 1, result.write(j, tf.gradients(y_flat[inds[j]], x))),
-        loop_vars,
-    )
-    return jacobian_stack.stack()
+def load_image(path, image_size):
+    from PIL import Image
 
-
-def download_inception_model(inception_model_path):
-    print("Downloading Inception model...")
-    archive = os.path.join("data", "inception5h.zip")
-    urlretrieve(INCEPTION_URL, archive)
-    with zipfile.ZipFile(archive, "r") as zip_ref:
-        zip_ref.extract("tensorflow_inception_graph.pb", "data")
-    return inception_model_path
+    with Image.open(path) as handle:
+        return np.asarray(resize_and_crop(handle, image_size), dtype=np.float32)[None]
 
 
 def parse_args():
@@ -56,105 +40,74 @@ def parse_args():
     parser.add_argument(
         "-t",
         "--training_path",
-        default="/datasets2/ILSVRC2012/train",
-        help="path to the ImageNet training set, used only when a perturbation must be computed",
+        default=None,
+        help="ImageNet training directory, or a Hugging Face dataset id, used only when a "
+        "perturbation has to be computed (default: stream from Hugging Face)",
+    )
+    parser.add_argument(
+        "-n",
+        "--num_images",
+        type=int,
+        default=50,
+        help="how many images to compute the perturbation from",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        default=None,
+        help="save the figure here instead of opening a window",
     )
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    path_train_imagenet = args.training_path
-    path_test_image = args.test_image
 
-    with tf.device(DEVICE):
-        persisted_sess = tf.compat.v1.Session()
-        inception_model_path = os.path.join("data", "tensorflow_inception_graph.pb")
+    model = Inception5hClassifier()
+    file_perturbation = os.path.join("data", "universal.npy")
 
-        if not os.path.isfile(inception_model_path):
-            download_inception_model(inception_model_path)
-
-        # Load the Inception model
-        with tf.io.gfile.GFile(inception_model_path, "rb") as f:
-            graph_def = tf.compat.v1.GraphDef()
-            graph_def.ParseFromString(f.read())
-            persisted_sess.graph.as_default()
-            tf.import_graph_def(graph_def, name="")
-
-        persisted_input = persisted_sess.graph.get_tensor_by_name("input:0")
-        persisted_output = persisted_sess.graph.get_tensor_by_name("softmax2_pre_activation:0")
-
-        print(">> Computing feedforward function...")
-
-        def f(image_inp):
-            return persisted_sess.run(
-                persisted_output,
-                feed_dict={persisted_input: np.reshape(image_inp, (-1, 224, 224, 3))},
-            )
-
-        file_perturbation = os.path.join("data", "universal.npy")
-
-        if not os.path.isfile(file_perturbation):
-            # TODO: Optimize this construction part!
-            print(">> Compiling the gradient tensorflow functions. This might take some time...")
-            y_flat = tf.reshape(persisted_output, (-1,))
-            inds = tf.compat.v1.placeholder(tf.int32, shape=(NUM_CLASSES,))
-            dydx = jacobian(y_flat, persisted_input, inds)
-
-            print(">> Computing gradient function...")
-
-            def grad_fs(image_inp, indices):
-                return persisted_sess.run(
-                    dydx, feed_dict={persisted_input: image_inp, inds: indices}
-                ).squeeze(axis=1)
-
-            # Load/Create data
-            datafile = os.path.join("data", "imagenet_data.npy")
-            if not os.path.isfile(datafile):
-                print(">> Creating pre-processed imagenet data...")
-                X = create_imagenet_npy(path_train_imagenet)
-
-                # Caution: saving this can take a lot of space, so it is left commented out.
-                # np.save(datafile, X)
-            else:
-                print(">> Pre-processed imagenet data detected")
-                X = np.load(datafile)
-
-            # Running universal perturbation
-            v = universal_perturbation(X, f, grad_fs, delta=0.1, num_classes=NUM_CLASSES)
-
-            # Saving the universal perturbation
-            np.save(file_perturbation, v)
-        else:
-            print(
-                ">> Found a pre-computed universal perturbation! "
-                f"Retrieving it from {file_perturbation}"
-            )
-            v = np.load(file_perturbation)
-
-        print(">> Testing the universal perturbation on an image")
-
-        image_original = preprocess_image_batch(
-            [path_test_image], img_size=(256, 256), crop_size=(224, 224), color_mode="rgb"
+    if not os.path.isfile(file_perturbation):
+        print(">> No pre-computed perturbation found; computing one.")
+        print(f">> Loading {args.num_images} images...")
+        dataset, _ = load_images(
+            args.training_path or "imagenet-val",
+            num_images=args.num_images,
+            image_size=model.image_size,
         )
-        label_original = np.argmax(f(image_original), axis=1).flatten()
-        str_label_original = cat2label_str(label_original)
+        v = universal_perturbation(
+            dataset, model, model.gradients, delta=0.1, num_classes=NUM_CLASSES
+        )
+        np.save(file_perturbation, v)
+    else:
+        print(
+            ">> Found a pre-computed universal perturbation! "
+            f"Retrieving it from {file_perturbation}"
+        )
+        v = np.load(file_perturbation)
 
-        # Clip the perturbation to make sure images fit in uint8
-        image_perturbed = avg_add_clip_pert(image_original, v)
-        label_perturbed = np.argmax(f(image_perturbed), axis=1).flatten()
-        str_label_perturbed = cat2label_str(label_perturbed)
+    print(">> Testing the universal perturbation on an image")
+    image_original = load_image(args.test_image, model.image_size)
+    image_perturbed = clip_perturbed(image_original, v)
 
-        # Show original and perturbed image
-        plt.figure()
-        plt.subplot(1, 2, 1)
-        plt.imshow(undo_image_avg(image_original[0, :, :, :]).astype(dtype="uint8"))
-        plt.title(str_label_original)
+    str_label_original = model.label(model.predict(image_original))
+    str_label_perturbed = model.label(model.predict(image_perturbed))
+    print(f">> {str_label_original} --> {str_label_perturbed}")
 
-        plt.subplot(1, 2, 2)
-        plt.imshow(undo_image_avg(image_perturbed[0, :, :, :]).astype(dtype="uint8"))
-        plt.title(str_label_perturbed)
+    plt.figure()
+    plt.subplot(1, 2, 1)
+    plt.imshow(image_original[0].astype(np.uint8))
+    plt.title(str_label_original)
+    plt.axis("off")
 
+    plt.subplot(1, 2, 2)
+    plt.imshow(image_perturbed[0].astype(np.uint8))
+    plt.title(str_label_perturbed)
+    plt.axis("off")
+
+    if args.output:
+        plt.savefig(args.output, bbox_inches="tight", dpi=150)
+        print(f">> Figure written to {args.output}")
+    else:
         plt.show()
 
 

@@ -40,8 +40,10 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 only-include = [
+    "classifiers.py",
     "deepfool.py",
     "deeptarget.py",
+    "imagenet_source.py",
     "prepare_imagenet_data.py",
     "universal_pert.py",
     "util_univ.py",

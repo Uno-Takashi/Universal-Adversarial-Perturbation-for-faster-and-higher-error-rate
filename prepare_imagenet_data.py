@@ -70,9 +70,14 @@ def do_image_avg(img):
 
 
 def undo_image_list(img_list):
+    """Add the channel means back and clip into uint8.
+
+    Clipping matters: a perturbed image easily leaves [0, 255], and an unclipped cast wraps
+    modulo 256, turning an overshoot of 300 into 44.
+    """
     undo_list = np.zeros(img_list.shape, dtype=np.uint8)
     for x in range(undo_list.shape[0]):
-        undo_list[x] = undo_image_avg(img_list[x]).astype(np.uint8)
+        undo_list[x] = np.clip(undo_image_avg(img_list[x]), 0, 255).astype(np.uint8)
     return undo_list
 
 
