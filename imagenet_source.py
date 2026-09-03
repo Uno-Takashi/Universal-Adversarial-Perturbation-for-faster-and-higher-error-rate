@@ -10,6 +10,7 @@ Both loaders return the same thing: an ``(N, H, W, 3)`` float32 array of raw pix
 the ground-truth labels, ready to hand to any :class:`classifiers.Classifier`.
 """
 
+import hashlib
 import io
 import json
 import os
@@ -17,6 +18,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 from PIL import Image
@@ -25,6 +27,11 @@ ROWS_ENDPOINT = "https://datasets-server.huggingface.co/rows"
 MAX_ROWS_PER_REQUEST = 100
 # Statuses worth retrying: viewer cache warm-up and rate limiting.
 _RETRY_STATUS = frozenset({429, 500, 502, 503, 504})
+# Images are fetched one HTTP request each, so a sweep spends most of its time waiting on
+# the network rather than on the GPU. Fetching them in parallel turns that around.
+DEFAULT_WORKERS = 16
+CACHE_ENV_VAR = "UAP_IMAGE_CACHE"
+DEFAULT_CACHE_DIR = os.path.join(".cache", "imagenet")
 
 # Ungated mirrors of the ILSVRC2012 validation split, already shuffled across classes.
 # `imagenet-1k` itself is gated: set HF_TOKEN and accept the dataset terms to use it.
@@ -129,6 +136,39 @@ def _decode_image(value):
     raise TypeError(f"Cannot decode an image from {type(value).__name__}")
 
 
+def cache_dir():
+    return os.environ.get(CACHE_ENV_VAR, DEFAULT_CACHE_DIR)
+
+
+def _cache_path(dataset, split, config, num_images, image_size, seed):
+    key = f"{dataset}|{split}|{config}|{num_images}|{tuple(image_size)}|{seed}"
+    digest = hashlib.sha256(key.encode()).hexdigest()[:16]
+    return os.path.join(cache_dir(), f"{digest}.npz")
+
+
+def _read_cache(path):
+    if not os.path.isfile(path):
+        return None
+    try:
+        with np.load(path) as bundle:
+            return bundle["images"], bundle["labels"]
+    except (OSError, ValueError, KeyError):
+        return None  # a truncated or stale file is not worth failing over
+
+
+def _write_cache(path, images, labels):
+    try:
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        tmp = f"{path}.tmp{os.getpid()}"
+        # Write through a handle: np.savez appends ".npz" to a *name*, which would leave the
+        # temporary file under a different path than the one os.replace is given.
+        with open(tmp, "wb") as handle:
+            np.savez(handle, images=images, labels=labels)
+        os.replace(tmp, path)
+    except OSError:
+        pass  # caching is an optimisation, never a requirement
+
+
 def load_hf_images(
     dataset=DEFAULT_DATASET,
     split=None,
@@ -136,12 +176,19 @@ def load_hf_images(
     image_size=(224, 224),
     seed=0,
     config="default",
+    workers=DEFAULT_WORKERS,
+    use_cache=True,
 ):
     """Fetch ``num_images`` images from a Hugging Face dataset.
 
     ``dataset`` takes a shorthand from :data:`KNOWN_DATASETS` or any hub id. A random
     contiguous window is read, which is a class-diverse sample because the mirrors are
     already shuffled. Pass ``seed=None`` to always start at offset 0.
+
+    Images are fetched with ``workers`` threads and the result is cached on disk, so repeating
+    a request (the same size and seed, for instance across models that share an input
+    resolution) costs nothing. Set ``UAP_IMAGE_CACHE`` to move the cache, or
+    ``use_cache=False`` to bypass it.
 
     Returns ``(images, labels)``; ``labels`` is empty when the dataset exposes no label
     column.
@@ -151,6 +198,12 @@ def load_hf_images(
     else:
         default_split = "train"
     split = split or default_split
+
+    cache_file = _cache_path(dataset, split, config, num_images, image_size, seed)
+    if use_cache:
+        cached = _read_cache(cache_file)
+        if cached is not None:
+            return cached
 
     probe = _get_json(_rows_url(dataset, config, split, 0, 1))
     total = int(probe.get("num_rows_total") or 0)
@@ -169,27 +222,38 @@ def load_hf_images(
     if image_column is None:
         raise ValueError(f"Could not find an image column in {dataset!r}; saw {sorted(first_row)}")
 
-    images = []
-    labels = []
+    # Collect the row metadata first; it is cheap and tells us exactly what to download.
+    entries = []
     offset = start
-    while len(images) < num_images:
-        length = min(MAX_ROWS_PER_REQUEST, num_images - len(images))
+    while len(entries) < num_images:
+        length = min(MAX_ROWS_PER_REQUEST, num_images - len(entries))
         payload = _get_json(_rows_url(dataset, config, split, offset, length))
         rows = payload.get("rows") or []
         if not rows:
             break
-        for entry in rows:
-            row = entry["row"]
-            with _decode_image(row[image_column]) as handle:
-                images.append(np.asarray(resize_and_crop(handle, image_size), dtype=np.float32))
-            if label_column is not None:
-                labels.append(int(row[label_column]))
+        entries.extend(entry["row"] for entry in rows)
         offset += len(rows)
 
-    if not images:
+    if not entries:
         raise ValueError(f"No images loaded from {dataset!r} split {split!r}")
 
-    return np.stack(images, axis=0), np.asarray(labels, dtype=np.int64)
+    def _fetch_one(row):
+        with _decode_image(row[image_column]) as handle:
+            return np.asarray(resize_and_crop(handle, image_size), dtype=np.float32)
+
+    if workers and workers > 1:
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            images = list(pool.map(_fetch_one, entries))
+    else:
+        images = [_fetch_one(row) for row in entries]
+
+    labels = [int(row[label_column]) for row in entries] if label_column is not None else []
+
+    stacked = np.stack(images, axis=0)
+    label_array = np.asarray(labels, dtype=np.int64)
+    if use_cache:
+        _write_cache(cache_file, stacked, label_array)
+    return stacked, label_array
 
 
 def load_local_images(root, num_images=50, image_size=(224, 224), per_class=None, seed=0):

@@ -246,3 +246,98 @@ def test_load_images_dispatches_on_the_source(imagenet_tree, monkeypatch):
     monkeypatch.setattr(imagenet_source, "_fetch", _FakeHttp())
     remote, _ = load_images("some/dataset", num_images=2, image_size=(16, 16), seed=None)
     assert remote.shape == (2, 16, 16, 3)
+
+
+def test_cache_round_trip_avoids_a_second_fetch(monkeypatch, tmp_path):
+    """A repeated request must be served from disk, not refetched."""
+    monkeypatch.setenv("UAP_IMAGE_CACHE", str(tmp_path / "cache"))
+    fake = _FakeHttp()
+    monkeypatch.setattr(imagenet_source, "_fetch", fake)
+
+    first_images, first_labels = load_hf_images("d", num_images=5, image_size=(16, 16), seed=None)
+    calls_after_first = fake.calls
+
+    second_images, second_labels = load_hf_images("d", num_images=5, image_size=(16, 16), seed=None)
+
+    assert fake.calls == calls_after_first, "the second call must not hit the network"
+    np.testing.assert_array_equal(first_images, second_images)
+    np.testing.assert_array_equal(first_labels, second_labels)
+
+
+def test_cache_writes_a_file_that_actually_lands(monkeypatch, tmp_path):
+    """np.savez renames a *name* by appending .npz; the temp file must still be replaced."""
+    cache = tmp_path / "cache"
+    monkeypatch.setenv("UAP_IMAGE_CACHE", str(cache))
+    monkeypatch.setattr(imagenet_source, "_fetch", _FakeHttp())
+
+    load_hf_images("d", num_images=3, image_size=(16, 16), seed=None)
+
+    files = sorted(p.name for p in cache.iterdir())
+    assert len(files) == 1, files
+    assert files[0].endswith(".npz")
+    assert ".tmp" not in files[0], "the temporary file was never renamed"
+
+
+def test_cache_keys_separate_distinct_requests(monkeypatch, tmp_path):
+    monkeypatch.setenv("UAP_IMAGE_CACHE", str(tmp_path / "cache"))
+    monkeypatch.setattr(imagenet_source, "_fetch", _FakeHttp())
+
+    load_hf_images("d", num_images=3, image_size=(16, 16), seed=None)
+    load_hf_images("d", num_images=4, image_size=(16, 16), seed=None)
+    load_hf_images("d", num_images=3, image_size=(32, 32), seed=None)
+
+    assert len(list((tmp_path / "cache").iterdir())) == 3
+
+
+def test_use_cache_false_bypasses_the_cache(monkeypatch, tmp_path):
+    monkeypatch.setenv("UAP_IMAGE_CACHE", str(tmp_path / "cache"))
+    fake = _FakeHttp()
+    monkeypatch.setattr(imagenet_source, "_fetch", fake)
+
+    load_hf_images("d", num_images=3, image_size=(16, 16), seed=None, use_cache=False)
+    calls = fake.calls
+    load_hf_images("d", num_images=3, image_size=(16, 16), seed=None, use_cache=False)
+
+    assert fake.calls > calls
+    assert not (tmp_path / "cache").exists()
+
+
+def test_a_corrupt_cache_file_is_ignored(monkeypatch, tmp_path):
+    cache = tmp_path / "cache"
+    monkeypatch.setenv("UAP_IMAGE_CACHE", str(cache))
+    monkeypatch.setattr(imagenet_source, "_fetch", _FakeHttp())
+
+    load_hf_images("d", num_images=3, image_size=(16, 16), seed=None)
+    cached_file = next(cache.iterdir())
+    cached_file.write_bytes(b"not an npz")
+
+    images, _ = load_hf_images("d", num_images=3, image_size=(16, 16), seed=None)
+    assert images.shape == (3, 16, 16, 3)
+
+
+def test_parallel_and_serial_fetching_agree(monkeypatch, tmp_path):
+    monkeypatch.setenv("UAP_IMAGE_CACHE", str(tmp_path / "cache"))
+    monkeypatch.setattr(imagenet_source, "_fetch", _FakeHttp())
+    parallel, labels_p = load_hf_images(
+        "d", num_images=8, image_size=(16, 16), seed=None, workers=8, use_cache=False
+    )
+
+    monkeypatch.setattr(imagenet_source, "_fetch", _FakeHttp())
+    serial, labels_s = load_hf_images(
+        "d", num_images=8, image_size=(16, 16), seed=None, workers=1, use_cache=False
+    )
+
+    np.testing.assert_array_equal(parallel, serial)
+    np.testing.assert_array_equal(labels_p, labels_s)
+
+
+def test_parallel_fetching_preserves_row_order(monkeypatch, tmp_path):
+    """Threads must not reorder images relative to their labels."""
+    monkeypatch.setenv("UAP_IMAGE_CACHE", str(tmp_path / "cache"))
+    monkeypatch.setattr(imagenet_source, "_fetch", _FakeHttp())
+
+    _, labels = load_hf_images(
+        "d", num_images=20, image_size=(16, 16), seed=None, workers=8, use_cache=False
+    )
+
+    assert labels.tolist() == list(range(20))

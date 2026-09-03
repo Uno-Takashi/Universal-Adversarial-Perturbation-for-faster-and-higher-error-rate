@@ -25,7 +25,13 @@ from abc import ABC, abstractmethod
 from urllib.request import urlretrieve
 
 import numpy as np
-import tensorflow as tf
+
+from gpu_support import enable_cuda_wheels
+
+# Must precede `import tensorflow`: TensorFlow resolves its CUDA libraries during import.
+enable_cuda_wheels()
+
+import tensorflow as tf  # noqa: E402
 
 INCEPTION_URL = "https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip"
 INCEPTION_GRAPH = "tensorflow_inception_graph.pb"
