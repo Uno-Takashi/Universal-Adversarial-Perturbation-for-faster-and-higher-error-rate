@@ -27,14 +27,13 @@ jobs:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
 
-      - name: Install dev dependencies
-        run: uv sync --only-group dev
-
+      # `--only-group dev` keeps TensorFlow out of the lint environment; a plain
+      # `uv run` would sync the whole project just to run ruff.
       - name: ruff check
-        run: uv run ruff check --output-format=github .
+        run: uv run --only-group dev ruff check --output-format=github .
 
       - name: ruff format --check
-        run: uv run ruff format --check --diff .
+        run: uv run --only-group dev ruff format --check --diff .
 
   test:
     name: Test (Python ${{ matrix.python-version }})

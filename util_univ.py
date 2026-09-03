@@ -17,9 +17,15 @@ def img2str(f, img):
 
 
 def cat2label_str(num_pert):
+    """Map a class index to its human-readable label.
+
+    Accepts a scalar or a single-element array; numpy >= 2 refuses to convert the latter
+    with a plain ``int()``.
+    """
+    index = int(np.ravel(num_pert)[0])
     with open(os.path.join("data", "labels.txt")) as fh:
         labels = fh.read().split("\n")
-    return labels[int(num_pert) - 1].split(",")[0]
+    return labels[index - 1].split(",")[0]
 
 
 def avg_add_clip_pert(avg_img, v):

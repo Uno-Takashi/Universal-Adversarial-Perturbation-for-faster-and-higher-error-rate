@@ -1,8 +1,10 @@
 import numpy as np
+import pytest
 
 from prepare_imagenet_data import undo_image_avg
 from util_univ import (
     avg_add_clip_pert,
+    cat2label_str,
     fooling_rate_calc_all,
     target_fooling_rate_calc,
 )
@@ -78,3 +80,23 @@ def test_fooling_rate_calc_all_detects_a_perturbation_that_flips_every_label():
 
     assert fooling_rate == 1.0
     assert target_rate == 1.0
+
+
+@pytest.mark.parametrize(
+    "num_pert",
+    [
+        1,
+        np.int64(1),
+        np.array([1]),  # what demo_inception passes: np.argmax(...).flatten()
+        np.array(1),
+        np.array([1.0]),
+    ],
+    ids=["int", "np-scalar", "1d-array", "0d-array", "float-array"],
+)
+def test_cat2label_str_accepts_scalars_and_single_element_arrays(num_pert, monkeypatch, tmp_path):
+    labels = tmp_path / "data"
+    labels.mkdir()
+    (labels / "labels.txt").write_text("kit fox, Vulpes macrotis\nEnglish setter\n")
+    monkeypatch.chdir(tmp_path)
+
+    assert cat2label_str(num_pert) == "kit fox"
