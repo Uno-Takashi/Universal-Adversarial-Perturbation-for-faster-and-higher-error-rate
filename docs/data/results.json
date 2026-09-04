@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-04T06:32:02+00:00",
-  "runCount": 43,
+  "generatedAt": "2026-09-04T11:40:00+00:00",
+  "runCount": 55,
   "sweepCounts": {
     "images": 24,
-    "multiplicity": 19,
+    "multiplicity": 31,
     "modern": 0
   },
   "models": [
@@ -739,6 +739,26 @@
       "paradigm": "efficient CNN (2018)",
       "numImages": 128,
       "numValImages": 200,
+      "searchNum": 20,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.359375,
+      "valFooling": 0.305,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.033333333333333326,
+      "cleanTop1": 0.685,
+      "seconds": 4962.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
       "searchNum": 3,
       "imageSize": [
         224,
@@ -871,6 +891,226 @@
       "margin": 0.05833333333333335,
       "cleanTop1": 0.685,
       "seconds": 91.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 1,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.4140625,
+      "valFooling": 0.07,
+      "randomBaseline": 0.18333333333333335,
+      "margin": -0.11333333333333334,
+      "cleanTop1": 0.705,
+      "seconds": 468.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 10,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.578125,
+      "valFooling": 0.28,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.09666666666666668,
+      "cleanTop1": 0.705,
+      "seconds": 4189.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 11,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.375,
+      "valFooling": 0.255,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.07166666666666666,
+      "cleanTop1": 0.705,
+      "seconds": 3934.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 2,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.796875,
+      "valFooling": 0.155,
+      "randomBaseline": 0.18333333333333335,
+      "margin": -0.02833333333333335,
+      "cleanTop1": 0.705,
+      "seconds": 329.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 3,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.78125,
+      "valFooling": 0.205,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.02166666666666664,
+      "cleanTop1": 0.705,
+      "seconds": 258.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 4,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.90625,
+      "valFooling": 0.24,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.05666666666666664,
+      "cleanTop1": 0.705,
+      "seconds": 345.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9296875,
+      "valFooling": 0.305,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.12166666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 391.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 6,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8515625,
+      "valFooling": 0.275,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.09166666666666667,
+      "cleanTop1": 0.705,
+      "seconds": 665.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 7,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.90625,
+      "valFooling": 0.31,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.12666666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 686.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 8,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8046875,
+      "valFooling": 0.31,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.12666666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 1092.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 9,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8515625,
+      "valFooling": 0.31,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.12666666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 2100.6,
       "perturbationLinf": 10.0
     }
   ]

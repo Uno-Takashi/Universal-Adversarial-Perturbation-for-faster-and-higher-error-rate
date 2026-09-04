@@ -1,0 +1,45 @@
+{
+  "args": {
+    "models": [
+      "inception_v3"
+    ],
+    "dataset": "imagenet-val",
+    "num_images": 64,
+    "num_val_images": 200,
+    "search_num": [
+      5
+    ],
+    "delta": 0.2,
+    "xi": 10.0,
+    "num_classes": 2,
+    "max_iter_uni": 10,
+    "max_iter_df": 25,
+    "batch_size": 32,
+    "seed": 0,
+    "transfer": false,
+    "out": "/tmp/claude-1000/-home-eunoe-Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate/5b430257-4889-4d21-86e5-52d9377d1452/scratchpad/gpusweep/inception_v3/64"
+  },
+  "results": [
+    {
+      "model": "inception_v3",
+      "search_num": 5,
+      "num_images": 64,
+      "num_val_images": 200,
+      "xi": 10.0,
+      "delta": 0.2,
+      "image_size": [
+        299,
+        299
+      ],
+      "clean_top1_val": 0.735,
+      "seconds": 44.4,
+      "perturbation_linf": 10.0,
+      "train_fooling_rate": 0.859375,
+      "train_fooling_rate_clipped": 0.859375,
+      "val_fooling_rate": 0.16,
+      "val_fooling_rate_clipped": 0.155,
+      "val_random_baseline_clipped": 0.16333333333333333
+    }
+  ],
+  "transfer": []
+}
