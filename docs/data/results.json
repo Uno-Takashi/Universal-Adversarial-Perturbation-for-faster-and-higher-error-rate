@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-04T19:24:35+00:00",
-  "runCount": 88,
+  "generatedAt": "2026-09-04T20:14:48+00:00",
+  "runCount": 108,
   "sweepCounts": {
     "images": 24,
-    "multiplicity": 40,
+    "multiplicity": 60,
     "modern": 24
   },
   "models": [
@@ -497,6 +497,406 @@
       "margin": 0.03666666666666668,
       "cleanTop1": 0.715,
       "seconds": 23.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 1,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3828125,
+      "valFooling": 0.085,
+      "randomBaseline": 0.32833333333333337,
+      "margin": -0.24333333333333335,
+      "cleanTop1": 0.6,
+      "seconds": 114.9,
+      "perturbationLinf": 9.9999846722332
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 10,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.953125,
+      "valFooling": 0.46,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.13166666666666665,
+      "cleanTop1": 0.6,
+      "seconds": 95.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 11,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9296875,
+      "valFooling": 0.455,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.12666666666666665,
+      "cleanTop1": 0.6,
+      "seconds": 93.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 12,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8828125,
+      "valFooling": 0.475,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.1466666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 109.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 13,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8515625,
+      "valFooling": 0.47,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.1416666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 118.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 14,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8515625,
+      "valFooling": 0.475,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.1466666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 126.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 15,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8984375,
+      "valFooling": 0.505,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.17666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 163.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 16,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.890625,
+      "valFooling": 0.445,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.11666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 173.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 17,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.859375,
+      "valFooling": 0.485,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.15666666666666662,
+      "cleanTop1": 0.6,
+      "seconds": 241.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 18,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.859375,
+      "valFooling": 0.51,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.18166666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 284.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 19,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8359375,
+      "valFooling": 0.505,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.17666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 316.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 2,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.7578125,
+      "valFooling": 0.16,
+      "randomBaseline": 0.32833333333333337,
+      "margin": -0.16833333333333336,
+      "cleanTop1": 0.6,
+      "seconds": 46.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 20,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.7578125,
+      "valFooling": 0.49,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.16166666666666663,
+      "cleanTop1": 0.6,
+      "seconds": 552.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 3,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9453125,
+      "valFooling": 0.215,
+      "randomBaseline": 0.32833333333333337,
+      "margin": -0.11333333333333337,
+      "cleanTop1": 0.6,
+      "seconds": 48.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 4,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9453125,
+      "valFooling": 0.305,
+      "randomBaseline": 0.32833333333333337,
+      "margin": -0.023333333333333373,
+      "cleanTop1": 0.6,
+      "seconds": 54.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9765625,
+      "valFooling": 0.405,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.07666666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 61.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 6,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9609375,
+      "valFooling": 0.405,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.07666666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 70.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 7,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8046875,
+      "valFooling": 0.445,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.11666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 57.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 8,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.953125,
+      "valFooling": 0.465,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.13666666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 82.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 9,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8046875,
+      "valFooling": 0.475,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.1466666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 68.0,
       "perturbationLinf": 10.0
     },
     {
