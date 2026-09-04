@@ -233,6 +233,23 @@ session・placeholder・feed dict は存在せず、`tf.while_loop` による手
 
 アルゴリズム部分は純粋な NumPy で callable を受け取るため、TensorFlow に依存しません。
 
+## 実験サイト
+
+手法・評価プロトコル・モデルごとの結果（インタラクティブなグラフ付き）・失敗モードの考察・関連研究の
+調査をまとめた実験記録を、[Fumadocs](https://fumadocs.dev) で構築し
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) から GitHub Pages に公開しています:
+
+**https://uno-takashi.github.io/Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate/**
+
+サイト上の図表はすべて `docs/data/results.json` から描画されます。このファイルは
+[`export_docs_data.py`](export_docs_data.py) が実験出力から直接生成するため、手入力の数値は
+一切含まれません。
+
+```bash
+uv run python export_docs_data.py --sweep images=results/images --out docs/data/results.json
+cd docs && npm install && npm run dev
+```
+
 ## 開発
 
 ```bash

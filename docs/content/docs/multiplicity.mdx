@@ -1,0 +1,28 @@
+---
+title: Multiplicity
+description: Does attacking more classes per image help, and how much does it cost?
+---
+
+The multiplicity **M** — `search_num` in the code — is how many runner-up classes each image is
+attacked toward per pass. M=1 is closest to the original UAP inner step; larger M does proportionally
+more work per image.
+
+<FoolingVsMultiplicity />
+
+Every run on this page uses a 128-image generation set, chosen because it is just past the point
+where the perturbation starts beating the random baseline and before the algorithm's convergence
+problems appear.
+
+<Callout title="Cost scales with M">
+  Attacking M targets per image costs roughly M times as many targeted DeepFool
+  runs. A useful reading of this chart is not "which M is highest" but "where
+  does the curve stop paying for itself".
+</Callout>
+
+## All runs
+
+<ModelTable model="mobilenet_v2" sweep="multiplicity" />
+
+<ModelTable model="resnet50" sweep="multiplicity" />
+
+<ModelTable model="inception5h" sweep="multiplicity" />

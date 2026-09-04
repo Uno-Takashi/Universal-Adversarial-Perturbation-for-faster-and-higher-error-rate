@@ -1,0 +1,877 @@
+{
+  "generatedAt": "2026-09-04T06:32:02+00:00",
+  "runCount": 43,
+  "sweepCounts": {
+    "images": 24,
+    "multiplicity": 19,
+    "modern": 0
+  },
+  "models": [
+    "inception5h",
+    "inception_v3",
+    "mobilenet_v2",
+    "resnet50"
+  ],
+  "runs": [
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 1024,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8623046875,
+      "valFooling": 0.685,
+      "randomBaseline": 0.345,
+      "margin": 0.3400000000000001,
+      "cleanTop1": 0.645,
+      "seconds": 349.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9375,
+      "valFooling": 0.385,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.05666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 151.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9375,
+      "valFooling": 0.12,
+      "randomBaseline": 0.325,
+      "margin": -0.20500000000000002,
+      "cleanTop1": 0.595,
+      "seconds": 10.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9609375,
+      "valFooling": 0.465,
+      "randomBaseline": 0.3216666666666667,
+      "margin": 0.1433333333333333,
+      "cleanTop1": 0.61,
+      "seconds": 104.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 512,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9296875,
+      "valFooling": 0.585,
+      "randomBaseline": 0.3433333333333333,
+      "margin": 0.24166666666666664,
+      "cleanTop1": 0.62,
+      "seconds": 177.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.90625,
+      "valFooling": 0.26,
+      "randomBaseline": 0.325,
+      "margin": -0.065,
+      "cleanTop1": 0.615,
+      "seconds": 29.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 1024,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.4609375,
+      "valFooling": 0.435,
+      "randomBaseline": 0.115,
+      "margin": 0.32,
+      "cleanTop1": 0.795,
+      "seconds": 2559.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.765625,
+      "valFooling": 0.19,
+      "randomBaseline": 0.165,
+      "margin": 0.024999999999999994,
+      "cleanTop1": 0.735,
+      "seconds": 127.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 1.0,
+      "valFooling": 0.11,
+      "randomBaseline": 0.1566666666666667,
+      "margin": -0.046666666666666703,
+      "cleanTop1": 0.705,
+      "seconds": 14.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.85546875,
+      "valFooling": 0.455,
+      "randomBaseline": 0.16666666666666666,
+      "margin": 0.28833333333333333,
+      "cleanTop1": 0.74,
+      "seconds": 211.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 512,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.87109375,
+      "valFooling": 0.545,
+      "randomBaseline": 0.16833333333333333,
+      "margin": 0.3766666666666667,
+      "cleanTop1": 0.75,
+      "seconds": 785.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.859375,
+      "valFooling": 0.155,
+      "randomBaseline": 0.16333333333333333,
+      "margin": -0.008333333333333331,
+      "cleanTop1": 0.735,
+      "seconds": 44.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 1024,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.80078125,
+      "valFooling": 0.615,
+      "randomBaseline": 0.295,
+      "margin": 0.32,
+      "cleanTop1": 0.69,
+      "seconds": 399.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.921875,
+      "valFooling": 0.3,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.02833333333333332,
+      "cleanTop1": 0.685,
+      "seconds": 39.6,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.14,
+      "randomBaseline": 0.27,
+      "margin": -0.13,
+      "cleanTop1": 0.665,
+      "seconds": 6.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9140625,
+      "valFooling": 0.405,
+      "randomBaseline": 0.265,
+      "margin": 0.14,
+      "cleanTop1": 0.695,
+      "seconds": 80.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 512,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.927734375,
+      "valFooling": 0.57,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.2983333333333333,
+      "cleanTop1": 0.675,
+      "seconds": 153.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.96875,
+      "valFooling": 0.235,
+      "randomBaseline": 0.27,
+      "margin": -0.03500000000000003,
+      "cleanTop1": 0.685,
+      "seconds": 19.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 1024,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.306640625,
+      "valFooling": 0.27,
+      "randomBaseline": 0.20000000000000004,
+      "margin": 0.06999999999999998,
+      "cleanTop1": 0.745,
+      "seconds": 2397.1,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8984375,
+      "valFooling": 0.275,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.09166666666666667,
+      "cleanTop1": 0.705,
+      "seconds": 64.6,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.125,
+      "randomBaseline": 0.18333333333333335,
+      "margin": -0.05833333333333335,
+      "cleanTop1": 0.695,
+      "seconds": 7.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.93359375,
+      "valFooling": 0.31,
+      "randomBaseline": 0.17,
+      "margin": 0.13999999999999999,
+      "cleanTop1": 0.72,
+      "seconds": 196.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 512,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.419921875,
+      "valFooling": 0.295,
+      "randomBaseline": 0.19333333333333336,
+      "margin": 0.10166666666666663,
+      "cleanTop1": 0.72,
+      "seconds": 1010.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.90625,
+      "valFooling": 0.215,
+      "randomBaseline": 0.17833333333333332,
+      "margin": 0.03666666666666668,
+      "cleanTop1": 0.715,
+      "seconds": 23.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 1,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.5625,
+      "valFooling": 0.125,
+      "randomBaseline": 0.27166666666666667,
+      "margin": -0.14666666666666667,
+      "cleanTop1": 0.685,
+      "seconds": 39.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 10,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.395,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.12333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 98.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 11,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.415,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.1433333333333333,
+      "cleanTop1": 0.685,
+      "seconds": 108.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 12,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.890625,
+      "valFooling": 0.405,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.13333333333333336,
+      "cleanTop1": 0.685,
+      "seconds": 181.1,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 13,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8984375,
+      "valFooling": 0.455,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.18333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 280.6,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 14,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.390625,
+      "valFooling": 0.33,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.05833333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 413.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 15,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.4375,
+      "valFooling": 0.36,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.08833333333333332,
+      "cleanTop1": 0.685,
+      "seconds": 461.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 16,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3984375,
+      "valFooling": 0.335,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.06333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 3782.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 17,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.40625,
+      "valFooling": 0.325,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.053333333333333344,
+      "cleanTop1": 0.685,
+      "seconds": 4046.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 18,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3515625,
+      "valFooling": 0.3,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.02833333333333332,
+      "cleanTop1": 0.685,
+      "seconds": 4257.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 19,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.375,
+      "valFooling": 0.335,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.06333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 4738.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 2,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8125,
+      "valFooling": 0.19,
+      "randomBaseline": 0.27166666666666667,
+      "margin": -0.08166666666666667,
+      "cleanTop1": 0.685,
+      "seconds": 45.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 3,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8125,
+      "valFooling": 0.245,
+      "randomBaseline": 0.27166666666666667,
+      "margin": -0.026666666666666672,
+      "cleanTop1": 0.685,
+      "seconds": 27.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 4,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.7734375,
+      "valFooling": 0.295,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.023333333333333317,
+      "cleanTop1": 0.685,
+      "seconds": 32.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8203125,
+      "valFooling": 0.295,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.023333333333333317,
+      "cleanTop1": 0.685,
+      "seconds": 37.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 6,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8046875,
+      "valFooling": 0.335,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.06333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 45.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 7,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9453125,
+      "valFooling": 0.325,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.053333333333333344,
+      "cleanTop1": 0.685,
+      "seconds": 57.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 8,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.890625,
+      "valFooling": 0.405,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.13333333333333336,
+      "cleanTop1": 0.685,
+      "seconds": 61.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 9,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.890625,
+      "valFooling": 0.33,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.05833333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 91.3,
+      "perturbationLinf": 10.0
+    }
+  ]
+}

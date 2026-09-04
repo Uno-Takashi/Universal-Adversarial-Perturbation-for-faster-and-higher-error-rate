@@ -1,0 +1,91 @@
+---
+title: Related work
+description: Where this method sits against the published literature.
+---
+
+A literature search was run against arXiv, Semantic Scholar and GitHub to establish whether this
+specific method is published. The summary below distinguishes what was verified from source from what
+is inference.
+
+## No publication of this exact recipe was found
+
+No located paper runs M _separate_ targeted DeepFool attacks toward the top-M runner-up classes and
+accumulates all of them into `v` per image, framed as a data-efficiency improvement. It appears in
+neither UAP survey ([2103.01498](https://arxiv.org/html/2103.01498v2),
+[2005.08087](https://arxiv.org/pdf/2005.08087)), and a GitHub code search for
+`deeptarget` alongside `universal_perturbation` returns only this repository.
+
+The gap to published work is narrow, however. Both halves of the idea exist separately.
+
+## Fast-UAP — the same claim, a different mechanism
+
+Dai & Shu, [arXiv:1911.01172](https://arxiv.org/abs/1911.01172); _Neurocomputing_ 422:109-117 (2021).
+
+Same outer loop, same l∞ clip at 10, same shuffle-per-pass, same DeepFool-based inner step — but it
+replaces DeepFool's minimal perturbation with the non-minimal one whose orientation best aligns with
+the current `v`. Its headline claim is the same as this repository's, with numbers: for ResNet-50,
+standard UAP needs about 6500 images to reach a 60% fooling rate while Fast-UAP needs about 2500.
+
+**Difference:** Fast-UAP selects **one** perturbation per image rather than accumulating M, the
+criterion is cosine alignment rather than class rank, and there is no multiplicity parameter.
+
+<Callout type="warn" title="Unresolved">
+  The arXiv version does not state how the candidate set for that alignment
+  argmax is enumerated. If the journal version enumerates candidates by running
+  targeted DeepFool toward each of the top-k classes — the obvious
+  implementation — then Fast-UAP performs almost exactly this repository's
+  per-image computation and merely *selects* instead of *summing*. The journal
+  version was inaccessible (403). **This should be checked before any novelty
+  claim.**
+</Callout>
+
+## kFool / kUAP — the same geometric idea, fused
+
+Tursynbek, Petiushko & Oseledets, _Geometry-Inspired Top-k Adversarial Perturbations_, WACV 2022.
+[arXiv:2006.15669](https://arxiv.org/abs/2006.15669).
+
+kFool sorts the logits, accumulates normalised gradient differences over the **top-k runner-up
+classes**, and steps along that summed direction — the bisector of an exterior angle between the
+nearest k decision boundaries. Algorithm 2 drops this into the UAP loop.
+
+So _"rank the classes and use the top-k runner-ups instead of only the nearest boundary, inside the
+UAP accumulation loop"_ is published.
+
+**Difference:** kFool _fuses_ the k boundaries into a single direction contributing one update per
+image; this repository runs k separate targeted attacks, each iterated to convergence, accumulating
+each with a projection in between. kFool's objective is top-k evasion, not top-1 fooling rate, and it
+makes no data-efficiency claim.
+
+## Data-efficient UAP — where the state of the art actually is
+
+These own the "high fooling rate from few images" claim, and none of them use DeepFool:
+
+| Method                                                       | Images | Result                          |
+| ------------------------------------------------------------ | ------ | ------------------------------- |
+| [TRS-UAP](https://arxiv.org/abs/2406.06089) (TIFS 2024)      | **10** | lifts UAP from 22.03% to 71.72% |
+| [SV-UAP](https://arxiv.org/abs/2005.08632) (CODS-COMAD 2022) | **64** | >60% fooling on ImageNet        |
+| [DM-UAP](https://arxiv.org/abs/2503.12793) (2025)            | 500    | +12.1% over prior SOTA          |
+
+Measured here, this implementation first beats a random baseline at 128 images and reaches roughly
+60–68% held-out fooling at 1024. That is well behind the bars above.
+
+## Targeted UAP literature
+
+All single-target or optimisation-based, and so structurally distinct:
+
+- Hirano & Takemoto, [arXiv:1911.06502](https://arxiv.org/abs/1911.06502) — one fixed target class,
+  FGSM-based.
+- Benz et al., _Double Targeted UAP_, [arXiv:2010.03288](https://arxiv.org/pdf/2010.03288) — multiple
+  source classes to one sink class.
+- Zhang et al., _CD-UAP_, [arXiv:2010.03300](https://arxiv.org/abs/2010.03300) — fools a chosen group
+  of classes; loss-based.
+
+## Verdict
+
+**Novel as a specific combination, but incremental, and in a crowded neighbourhood.** The ingredient
+is published (kFool/kUAP), the claim is published (Fast-UAP), and what appears unpublished is only
+the precise recipe: M independent targeted runs per image, each accumulated with projection, with M
+as a tunable multiplicity, evaluated for data efficiency.
+
+For a publication route, comparing directly against Fast-UAP and kFool would settle more than adding
+further architectures.

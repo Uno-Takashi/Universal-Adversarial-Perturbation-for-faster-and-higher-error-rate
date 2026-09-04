@@ -1,0 +1,40 @@
+---
+title: Architectures
+description: Whether the method carries beyond the CNNs it was designed on.
+---
+
+The original work predates the vision transformer. These runs ask whether the same algorithm, with no
+changes, still produces a universal perturbation on the architectures that followed — including
+distillation-trained models, which see heavily augmented data during training.
+
+<ModelRoster sweep="modern" />
+
+<MarginVsImages sweep="modern" />
+
+<MarginMatrix sweep="modern" />
+
+## Per model
+
+### ViT-B/16 — plain vision transformer
+
+<ModelTable model="vit_b16" sweep="modern" />
+
+### Swin-T — hierarchical windowed transformer
+
+<ModelTable model="swin_tiny" sweep="modern" />
+
+### DeiT-B/16 distilled — distillation-trained transformer
+
+<ModelTable model="deit_b16_distilled" sweep="modern" />
+
+### ConvNeXt-T — modernised CNN
+
+<ModelTable model="convnext_tiny" sweep="modern" />
+
+### MobileNetV3-Large
+
+<ModelTable model="mobilenet_v3_large" sweep="modern" />
+
+### ResNet-vd-50 SSLD — distillation-trained CNN
+
+<ModelTable model="resnet_vd_50_ssld" sweep="modern" />

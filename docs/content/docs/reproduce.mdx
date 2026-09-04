@@ -1,0 +1,107 @@
+---
+title: Reproduce
+description: Running these experiments, and rebuilding this site from the output.
+---
+
+## Install
+
+```bash
+git clone https://github.com/Uno-Takashi/Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate
+cd Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate
+
+uv sync --extra cuda     # or `uv sync` for CPU only
+```
+
+<Callout type="warn" title="Confirm the GPU before a long run">
+  TensorFlow falls back to the CPU with a single line of warning, and the run is then several times
+  slower for no visible reason. Every measurement in an early version of this work ran on the CPU
+  without saying so.
+
+```bash
+uv run --extra cuda python -c "import classifiers, tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+```
+
+An empty list means the CUDA libraries were not found. A system CUDA install does not automatically
+work — it must be a version TensorFlow supports (CUDA 12.x for TF 2.21; CUDA 13 is too new), which
+is why the `cuda` extra, carrying its own wheels, is the reliable route.
+
+</Callout>
+
+With the `cuda` extra, pass it to `uv run` too — a bare `uv run` re-syncs to the default extras and
+uninstalls the CUDA wheels.
+
+## A single run
+
+```bash
+uv run --extra cuda python experiment.py \
+  --models mobilenet_v2 \
+  --num-images 128 --num-val-images 200 \
+  --search-num 5 --max-iter-uni 10 \
+  --out results/example
+```
+
+This prints a table and writes `results/example/summary.json` plus the perturbation as `.npy`.
+
+## The sweeps on this site
+
+```bash
+# Generation-set size, four models
+for MODEL in inception5h mobilenet_v2 resnet50 inception_v3; do
+  for N in 16 64 128 256 512 1024; do
+    uv run --extra cuda python experiment.py --models $MODEL \
+      --num-images $N --num-val-images 200 --search-num 5 --max-iter-uni 10 \
+      --out results/images/$MODEL/$N
+  done
+done
+
+# Multiplicity M
+for MODEL in mobilenet_v2 resnet50 inception5h; do
+  for M in $(seq 1 20); do
+    uv run --extra cuda python experiment.py --models $MODEL \
+      --num-images 128 --num-val-images 200 --search-num $M --max-iter-uni 10 \
+      --out results/multiplicity/$MODEL/$M
+  done
+done
+
+# Modern architectures
+for MODEL in vit_b16 swin_tiny deit_b16_distilled mobilenet_v3_large resnet_vd_50_ssld convnext_tiny; do
+  for N in 16 64 128 256; do
+    uv run --extra cuda python experiment.py --models $MODEL \
+      --num-images $N --num-val-images 200 --search-num 5 --max-iter-uni 10 \
+      --out results/modern/$MODEL/$N
+  done
+done
+```
+
+Images are cached under `.cache/imagenet`, so models sharing an input resolution reuse one download.
+
+## Rebuilding this site
+
+```bash
+uv run python export_docs_data.py \
+  --sweep images=results/images \
+  --sweep multiplicity=results/multiplicity \
+  --sweep modern=results/modern \
+  --out docs/data/results.json
+
+cd docs && npm install && npm run build
+```
+
+Every figure and table is rendered from `docs/data/results.json`, so refreshing the data refreshes
+the site without touching any prose. `npm run dev` serves it locally.
+
+## Adding a model
+
+Subclass `classifiers.Classifier` and implement `_forward` — raw `[0, 255]` pixels to pre-softmax
+logits — and `label`. Gradients come from `tf.GradientTape` automatically. Models from
+`tf.keras.applications` and KerasHub are already wired up through `KERAS_MODELS` and
+`KERAS_HUB_MODELS`.
+
+## Tests
+
+```bash
+uv run pytest
+```
+
+The suite needs no network and no model weights: the algorithms are checked against a synthetic
+linear classifier with an analytic Jacobian, and the Hugging Face loader against a fake HTTP layer.

@@ -1,0 +1,58 @@
+---
+title: Results
+description: Held-out fooling rate against generation-set size, for four architectures.
+---
+
+## How many images does it need?
+
+<MarginVsImages />
+
+Every model starts **below** the random baseline and crosses it between 64 and 128 images. That
+crossing point is the practical answer: below roughly 100 images this algorithm does not produce a
+universal perturbation, it produces an overfitted one that is _less_ effective than noise of the same
+magnitude.
+
+<MarginMatrix />
+
+## Absolute rates, with each model's floor
+
+<FoolingVsImages />
+
+The dashed lines show why the margin is the right statistic. Inception 5h sits at a 32–35% random
+baseline while InceptionV3 sits at 11–17%: the same `val fool` means very different things on the
+two. Older and lighter models are markedly more susceptible to plain noise.
+
+## Fitted set versus held-out set
+
+The gap between `gen fool` and `val fool` is the overfitting, and it closes as the generation set
+grows — from 73.5 points at n=16 down to 11.7 points at n=1024 on MobileNetV2.
+
+The clearest single case is InceptionV3 at 16 images: **100.0%** on the images it was fitted to,
+**11.0%** on held-out images, against a 15.7% random floor. A perfect score on the fitted set and
+worse than noise everywhere else.
+
+## Per model
+
+### Inception 5h
+
+The model from the original paper. Improves monotonically and ends with the joint-best margin.
+
+<ModelTable model="inception5h" />
+
+### MobileNetV2
+
+<ModelTable model="mobilenet_v2" />
+
+### ResNet-50
+
+The exception. It peaks at 256 images and then **degrades** — see
+[Discussion](/docs/discussion#convergence-failure) for why.
+
+<ModelTable model="resnet50" />
+
+### InceptionV3
+
+Reaches the largest single margin of the sweep, +37.7pt at 512 images, then falls back at 1024 for
+the same convergence reason as ResNet-50.
+
+<ModelTable model="inception_v3" />

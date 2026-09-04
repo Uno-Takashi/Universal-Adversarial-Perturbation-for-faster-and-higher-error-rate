@@ -209,6 +209,24 @@ call — a frozen `GraphDef` has no other TF2 entry point — and
 
 The algorithm modules are pure NumPy and take callables, so they carry no TensorFlow dependency.
 
+## Experiment site
+
+The full experimental record — method, protocol, per-model results with interactive charts,
+discussion of failure modes, and a survey of related work — is published as a documentation site
+built with [Fumadocs](https://fumadocs.dev) and deployed to GitHub Pages by
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml):
+
+**https://uno-takashi.github.io/Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate/**
+
+Every figure and table there is rendered from `docs/data/results.json`, which
+[`export_docs_data.py`](export_docs_data.py) produces directly from experiment output — so the site
+never carries a hand-typed number.
+
+```bash
+uv run python export_docs_data.py --sweep images=results/images --out docs/data/results.json
+cd docs && npm install && npm run dev
+```
+
 ## Development
 
 ```bash

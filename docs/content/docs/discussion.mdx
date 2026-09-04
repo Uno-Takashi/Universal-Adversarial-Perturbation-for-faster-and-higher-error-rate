@@ -1,0 +1,91 @@
+---
+title: Discussion
+description: Failure modes, and what these numbers do and do not support.
+---
+
+## The fitted-set fooling rate is not a result
+
+The algorithm stops when the fooling rate on its generation set reaches `1 − δ`. Reporting that same
+number as the outcome restates the stopping criterion. With 150,528 free parameters in `v` and as few
+as 16 images to satisfy, reaching it says nothing about any other image.
+
+This is not a subtle effect. On four architectures the fitted-set rate sits at 80–100% across the
+whole sweep while the held-out rate moves from 11% to 68%.
+
+## Convergence failure [#convergence-failure]
+
+Two runs degrade as the generation set grows, which should not happen:
+
+- **ResNet-50** peaks at 256 images (+14.0pt) and falls to +10.2pt at 512 and +7.0pt at 1024.
+- **InceptionV3** peaks at 512 (+37.7pt) and falls to +32.0pt at 1024.
+
+The cause is visible in the per-pass rates. ResNet-50 at n=512 went:
+
+```
+pass 0-9: 0.320 → 0.320 → 0.379 → 0.336 → 0.375 → 0.389 → 0.387 → 0.381 → 0.457 → 0.428
+                                                                            best      returned
+```
+
+The fooling rate **oscillates** rather than improving monotonically, the run exhausts its pass budget
+without reaching the threshold, and the loop returns the perturbation from its final pass — 0.428 —
+having passed through 0.457 one pass earlier.
+
+<Callout
+  type="warn"
+  title="This is a fixable defect, not a property of the method"
+>
+  Keeping the best-scoring `v` instead of the last would recover those runs. The
+  current behaviour is faithful to the reference implementation, where the loop
+  terminates on reaching its target rate and final and best coincide — but that
+  assumption does not hold in the regime these runs explore.
+</Callout>
+
+Where the run _does_ converge, the pattern is the expected one: Inception 5h and MobileNetV2 both
+improve monotonically to +34.0pt and +32.0pt at 1024 images.
+
+## Model robustness runs opposite to model age
+
+The random-perturbation baseline is itself a measurement, and it orders the models cleanly:
+
+| Model               | Random baseline |
+| ------------------- | --------------- |
+| Inception 5h (2014) | 32–35%          |
+| MobileNetV2 (2018)  | 27%             |
+| ResNet-50 (2015)    | 17–19%          |
+| InceptionV3 (2015)  | 11–17%          |
+
+An l∞ perturbation of 10/255 flips a third of Inception 5h's predictions on its own. Any fooling rate
+reported on that model without this floor subtracted is substantially an artefact of the model's
+fragility.
+
+## What these results support
+
+- The algorithm **does** produce universal perturbations, on every architecture tested, given enough
+  images.
+- The practical floor is **roughly 100 images**; below it, the output is worse than noise.
+- The multiplicity M is a real knob, with the cost scaling roughly linearly in M.
+
+## What they do not support
+
+- Any claim about data efficiency relative to the published state of the art. See
+  [Related work](/docs/related-work) — methods exist that reach far higher fooling rates from 10 to
+  64 images.
+- Any comparison against the original paper's figures, which were measured with a different protocol
+  on a different data scale.
+- Conclusions about ResNet-50 at 512 images and above, until the convergence defect is fixed.
+
+## Threats to validity
+
+**Held-out sets are 200 images.** A margin of a few points is within sampling noise; the crossing
+point between 64 and 128 images is well outside it.
+
+**One seed per configuration.** The sweep varies the generation-set size, not the draw. Run-to-run
+variance from a different sample is not characterised.
+
+**Windows, not independent samples.** Each run reads a contiguous window of an already-shuffled
+mirror. Clean top-1 varies by a few points between windows, so effective sample size is somewhat
+below 200.
+
+**Clipped rates only.** Figures report the fooling rate after clipping to valid pixels. The unclipped
+rate — the criterion the algorithm actually optimises — is in the exported data and is usually within
+a point or two.
