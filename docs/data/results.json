@@ -1,0 +1,2183 @@
+{
+  "generatedAt": "2026-09-04T20:14:48+00:00",
+  "runCount": 108,
+  "sweepCounts": {
+    "images": 24,
+    "multiplicity": 60,
+    "modern": 24
+  },
+  "models": [
+    "convnext_tiny",
+    "deit_b16_distilled",
+    "inception5h",
+    "inception_v3",
+    "mobilenet_v2",
+    "mobilenet_v3_large",
+    "resnet50",
+    "resnet_vd_50_ssld",
+    "swin_tiny",
+    "vit_b16"
+  ],
+  "runs": [
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 1024,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8623046875,
+      "valFooling": 0.685,
+      "randomBaseline": 0.345,
+      "margin": 0.3400000000000001,
+      "cleanTop1": 0.645,
+      "seconds": 349.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9375,
+      "valFooling": 0.385,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.05666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 151.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9375,
+      "valFooling": 0.12,
+      "randomBaseline": 0.325,
+      "margin": -0.20500000000000002,
+      "cleanTop1": 0.595,
+      "seconds": 10.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9609375,
+      "valFooling": 0.465,
+      "randomBaseline": 0.3216666666666667,
+      "margin": 0.1433333333333333,
+      "cleanTop1": 0.61,
+      "seconds": 104.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 512,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9296875,
+      "valFooling": 0.585,
+      "randomBaseline": 0.3433333333333333,
+      "margin": 0.24166666666666664,
+      "cleanTop1": 0.62,
+      "seconds": 177.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.90625,
+      "valFooling": 0.26,
+      "randomBaseline": 0.325,
+      "margin": -0.065,
+      "cleanTop1": 0.615,
+      "seconds": 29.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 1024,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.4609375,
+      "valFooling": 0.435,
+      "randomBaseline": 0.115,
+      "margin": 0.32,
+      "cleanTop1": 0.795,
+      "seconds": 2559.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.765625,
+      "valFooling": 0.19,
+      "randomBaseline": 0.165,
+      "margin": 0.024999999999999994,
+      "cleanTop1": 0.735,
+      "seconds": 127.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 1.0,
+      "valFooling": 0.11,
+      "randomBaseline": 0.1566666666666667,
+      "margin": -0.046666666666666703,
+      "cleanTop1": 0.705,
+      "seconds": 14.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.85546875,
+      "valFooling": 0.455,
+      "randomBaseline": 0.16666666666666666,
+      "margin": 0.28833333333333333,
+      "cleanTop1": 0.74,
+      "seconds": 211.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 512,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.87109375,
+      "valFooling": 0.545,
+      "randomBaseline": 0.16833333333333333,
+      "margin": 0.3766666666666667,
+      "cleanTop1": 0.75,
+      "seconds": 785.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "inception_v3",
+      "paradigm": "CNN (2015)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        299,
+        299
+      ],
+      "xi": 10.0,
+      "genFooling": 0.859375,
+      "valFooling": 0.155,
+      "randomBaseline": 0.16333333333333333,
+      "margin": -0.008333333333333331,
+      "cleanTop1": 0.735,
+      "seconds": 44.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 1024,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.80078125,
+      "valFooling": 0.615,
+      "randomBaseline": 0.295,
+      "margin": 0.32,
+      "cleanTop1": 0.69,
+      "seconds": 399.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.921875,
+      "valFooling": 0.3,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.02833333333333332,
+      "cleanTop1": 0.685,
+      "seconds": 39.6,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.14,
+      "randomBaseline": 0.27,
+      "margin": -0.13,
+      "cleanTop1": 0.665,
+      "seconds": 6.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9140625,
+      "valFooling": 0.405,
+      "randomBaseline": 0.265,
+      "margin": 0.14,
+      "cleanTop1": 0.695,
+      "seconds": 80.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 512,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.927734375,
+      "valFooling": 0.57,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.2983333333333333,
+      "cleanTop1": 0.675,
+      "seconds": 153.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.96875,
+      "valFooling": 0.235,
+      "randomBaseline": 0.27,
+      "margin": -0.03500000000000003,
+      "cleanTop1": 0.685,
+      "seconds": 19.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 1024,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.306640625,
+      "valFooling": 0.27,
+      "randomBaseline": 0.20000000000000004,
+      "margin": 0.06999999999999998,
+      "cleanTop1": 0.745,
+      "seconds": 2397.1,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8984375,
+      "valFooling": 0.275,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.09166666666666667,
+      "cleanTop1": 0.705,
+      "seconds": 64.6,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.125,
+      "randomBaseline": 0.18333333333333335,
+      "margin": -0.05833333333333335,
+      "cleanTop1": 0.695,
+      "seconds": 7.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.93359375,
+      "valFooling": 0.31,
+      "randomBaseline": 0.17,
+      "margin": 0.13999999999999999,
+      "cleanTop1": 0.72,
+      "seconds": 196.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 512,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.419921875,
+      "valFooling": 0.295,
+      "randomBaseline": 0.19333333333333336,
+      "margin": 0.10166666666666663,
+      "cleanTop1": 0.72,
+      "seconds": 1010.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "images",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.90625,
+      "valFooling": 0.215,
+      "randomBaseline": 0.17833333333333332,
+      "margin": 0.03666666666666668,
+      "cleanTop1": 0.715,
+      "seconds": 23.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 1,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3828125,
+      "valFooling": 0.085,
+      "randomBaseline": 0.32833333333333337,
+      "margin": -0.24333333333333335,
+      "cleanTop1": 0.6,
+      "seconds": 114.9,
+      "perturbationLinf": 9.9999846722332
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 10,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.953125,
+      "valFooling": 0.46,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.13166666666666665,
+      "cleanTop1": 0.6,
+      "seconds": 95.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 11,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9296875,
+      "valFooling": 0.455,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.12666666666666665,
+      "cleanTop1": 0.6,
+      "seconds": 93.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 12,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8828125,
+      "valFooling": 0.475,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.1466666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 109.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 13,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8515625,
+      "valFooling": 0.47,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.1416666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 118.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 14,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8515625,
+      "valFooling": 0.475,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.1466666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 126.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 15,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8984375,
+      "valFooling": 0.505,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.17666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 163.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 16,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.890625,
+      "valFooling": 0.445,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.11666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 173.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 17,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.859375,
+      "valFooling": 0.485,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.15666666666666662,
+      "cleanTop1": 0.6,
+      "seconds": 241.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 18,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.859375,
+      "valFooling": 0.51,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.18166666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 284.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 19,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8359375,
+      "valFooling": 0.505,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.17666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 316.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 2,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.7578125,
+      "valFooling": 0.16,
+      "randomBaseline": 0.32833333333333337,
+      "margin": -0.16833333333333336,
+      "cleanTop1": 0.6,
+      "seconds": 46.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 20,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.7578125,
+      "valFooling": 0.49,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.16166666666666663,
+      "cleanTop1": 0.6,
+      "seconds": 552.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 3,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9453125,
+      "valFooling": 0.215,
+      "randomBaseline": 0.32833333333333337,
+      "margin": -0.11333333333333337,
+      "cleanTop1": 0.6,
+      "seconds": 48.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 4,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9453125,
+      "valFooling": 0.305,
+      "randomBaseline": 0.32833333333333337,
+      "margin": -0.023333333333333373,
+      "cleanTop1": 0.6,
+      "seconds": 54.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9765625,
+      "valFooling": 0.405,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.07666666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 61.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 6,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9609375,
+      "valFooling": 0.405,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.07666666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 70.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 7,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8046875,
+      "valFooling": 0.445,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.11666666666666664,
+      "cleanTop1": 0.6,
+      "seconds": 57.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 8,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.953125,
+      "valFooling": 0.465,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.13666666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 82.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "inception5h",
+      "paradigm": "CNN (2014, the paper's model)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 9,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8046875,
+      "valFooling": 0.475,
+      "randomBaseline": 0.32833333333333337,
+      "margin": 0.1466666666666666,
+      "cleanTop1": 0.6,
+      "seconds": 68.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 1,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.5625,
+      "valFooling": 0.125,
+      "randomBaseline": 0.27166666666666667,
+      "margin": -0.14666666666666667,
+      "cleanTop1": 0.685,
+      "seconds": 39.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 10,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.395,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.12333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 98.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 11,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.415,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.1433333333333333,
+      "cleanTop1": 0.685,
+      "seconds": 108.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 12,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.890625,
+      "valFooling": 0.405,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.13333333333333336,
+      "cleanTop1": 0.685,
+      "seconds": 181.1,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 13,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8984375,
+      "valFooling": 0.455,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.18333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 280.6,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 14,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.390625,
+      "valFooling": 0.33,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.05833333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 413.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 15,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.4375,
+      "valFooling": 0.36,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.08833333333333332,
+      "cleanTop1": 0.685,
+      "seconds": 461.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 16,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3984375,
+      "valFooling": 0.335,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.06333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 3782.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 17,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.40625,
+      "valFooling": 0.325,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.053333333333333344,
+      "cleanTop1": 0.685,
+      "seconds": 4046.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 18,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3515625,
+      "valFooling": 0.3,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.02833333333333332,
+      "cleanTop1": 0.685,
+      "seconds": 4257.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 19,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.375,
+      "valFooling": 0.335,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.06333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 4738.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 2,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8125,
+      "valFooling": 0.19,
+      "randomBaseline": 0.27166666666666667,
+      "margin": -0.08166666666666667,
+      "cleanTop1": 0.685,
+      "seconds": 45.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 20,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.359375,
+      "valFooling": 0.305,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.033333333333333326,
+      "cleanTop1": 0.685,
+      "seconds": 4962.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 3,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8125,
+      "valFooling": 0.245,
+      "randomBaseline": 0.27166666666666667,
+      "margin": -0.026666666666666672,
+      "cleanTop1": 0.685,
+      "seconds": 27.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 4,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.7734375,
+      "valFooling": 0.295,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.023333333333333317,
+      "cleanTop1": 0.685,
+      "seconds": 32.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8203125,
+      "valFooling": 0.295,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.023333333333333317,
+      "cleanTop1": 0.685,
+      "seconds": 37.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 6,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8046875,
+      "valFooling": 0.335,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.06333333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 45.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 7,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9453125,
+      "valFooling": 0.325,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.053333333333333344,
+      "cleanTop1": 0.685,
+      "seconds": 57.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 8,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.890625,
+      "valFooling": 0.405,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.13333333333333336,
+      "cleanTop1": 0.685,
+      "seconds": 61.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "mobilenet_v2",
+      "paradigm": "efficient CNN (2018)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 9,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.890625,
+      "valFooling": 0.33,
+      "randomBaseline": 0.27166666666666667,
+      "margin": 0.05833333333333335,
+      "cleanTop1": 0.685,
+      "seconds": 91.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 1,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.4140625,
+      "valFooling": 0.07,
+      "randomBaseline": 0.18333333333333335,
+      "margin": -0.11333333333333334,
+      "cleanTop1": 0.705,
+      "seconds": 468.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 10,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.578125,
+      "valFooling": 0.28,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.09666666666666668,
+      "cleanTop1": 0.705,
+      "seconds": 4189.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 11,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.375,
+      "valFooling": 0.255,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.07166666666666666,
+      "cleanTop1": 0.705,
+      "seconds": 3934.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 12,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3828125,
+      "valFooling": 0.25,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.06666666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 587.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 13,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3125,
+      "valFooling": 0.2,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.016666666666666663,
+      "cleanTop1": 0.705,
+      "seconds": 622.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 14,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3671875,
+      "valFooling": 0.245,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.06166666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 673.6,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 15,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3515625,
+      "valFooling": 0.215,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.03166666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 714.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 16,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.375,
+      "valFooling": 0.275,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.09166666666666667,
+      "cleanTop1": 0.705,
+      "seconds": 770.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 17,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.390625,
+      "valFooling": 0.24,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.05666666666666664,
+      "cleanTop1": 0.705,
+      "seconds": 821.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 18,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.328125,
+      "valFooling": 0.245,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.06166666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 853.1,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 19,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.3515625,
+      "valFooling": 0.23,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.04666666666666666,
+      "cleanTop1": 0.705,
+      "seconds": 875.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 2,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.796875,
+      "valFooling": 0.155,
+      "randomBaseline": 0.18333333333333335,
+      "margin": -0.02833333333333335,
+      "cleanTop1": 0.705,
+      "seconds": 329.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 20,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.375,
+      "valFooling": 0.26,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.07666666666666666,
+      "cleanTop1": 0.705,
+      "seconds": 933.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 3,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.78125,
+      "valFooling": 0.205,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.02166666666666664,
+      "cleanTop1": 0.705,
+      "seconds": 258.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 4,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.90625,
+      "valFooling": 0.24,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.05666666666666664,
+      "cleanTop1": 0.705,
+      "seconds": 345.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9296875,
+      "valFooling": 0.305,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.12166666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 391.5,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 6,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8515625,
+      "valFooling": 0.275,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.09166666666666667,
+      "cleanTop1": 0.705,
+      "seconds": 665.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 7,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.90625,
+      "valFooling": 0.31,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.12666666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 686.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 8,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8046875,
+      "valFooling": 0.31,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.12666666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 1092.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "multiplicity",
+      "model": "resnet50",
+      "paradigm": "CNN (2015)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 9,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8515625,
+      "valFooling": 0.31,
+      "randomBaseline": 0.18333333333333335,
+      "margin": 0.12666666666666665,
+      "cleanTop1": 0.705,
+      "seconds": 2100.6,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "convnext_tiny",
+      "paradigm": "modernised CNN (2022)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.796875,
+      "valFooling": 0.175,
+      "randomBaseline": 0.10000000000000002,
+      "margin": 0.07499999999999997,
+      "cleanTop1": 0.815,
+      "seconds": 187.9,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "convnext_tiny",
+      "paradigm": "modernised CNN (2022)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9375,
+      "valFooling": 0.07,
+      "randomBaseline": 0.10666666666666667,
+      "margin": -0.03666666666666667,
+      "cleanTop1": 0.8,
+      "seconds": 19.1,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "convnext_tiny",
+      "paradigm": "modernised CNN (2022)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.89453125,
+      "valFooling": 0.38,
+      "randomBaseline": 0.10000000000000002,
+      "margin": 0.27999999999999997,
+      "cleanTop1": 0.82,
+      "seconds": 556.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "convnext_tiny",
+      "paradigm": "modernised CNN (2022)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.78125,
+      "valFooling": 0.105,
+      "randomBaseline": 0.10000000000000002,
+      "margin": 0.004999999999999977,
+      "cleanTop1": 0.82,
+      "seconds": 62.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "deit_b16_distilled",
+      "paradigm": "distillation-trained transformer (2021)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.78125,
+      "valFooling": 0.175,
+      "randomBaseline": 0.09833333333333333,
+      "margin": 0.07666666666666666,
+      "cleanTop1": 0.805,
+      "seconds": 244.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "deit_b16_distilled",
+      "paradigm": "distillation-trained transformer (2021)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.12,
+      "randomBaseline": 0.09999999999999999,
+      "margin": 0.020000000000000004,
+      "cleanTop1": 0.79,
+      "seconds": 17.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "deit_b16_distilled",
+      "paradigm": "distillation-trained transformer (2021)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.76171875,
+      "valFooling": 0.3,
+      "randomBaseline": 0.08833333333333333,
+      "margin": 0.21166666666666667,
+      "cleanTop1": 0.81,
+      "seconds": 706.3,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "deit_b16_distilled",
+      "paradigm": "distillation-trained transformer (2021)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.828125,
+      "valFooling": 0.16,
+      "randomBaseline": 0.10166666666666667,
+      "margin": 0.058333333333333334,
+      "cleanTop1": 0.81,
+      "seconds": 73.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "mobilenet_v3_large",
+      "paradigm": "efficient CNN (2019)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8125,
+      "valFooling": 0.345,
+      "randomBaseline": 0.19333333333333333,
+      "margin": 0.15166666666666664,
+      "cleanTop1": 0.74,
+      "seconds": 57.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "mobilenet_v3_large",
+      "paradigm": "efficient CNN (2019)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.15,
+      "randomBaseline": 0.19166666666666665,
+      "margin": -0.04166666666666666,
+      "cleanTop1": 0.735,
+      "seconds": 14.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "mobilenet_v3_large",
+      "paradigm": "efficient CNN (2019)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.84765625,
+      "valFooling": 0.4,
+      "randomBaseline": 0.18499999999999997,
+      "margin": 0.21500000000000005,
+      "cleanTop1": 0.755,
+      "seconds": 175.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "mobilenet_v3_large",
+      "paradigm": "efficient CNN (2019)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.96875,
+      "valFooling": 0.265,
+      "randomBaseline": 0.18666666666666668,
+      "margin": 0.07833333333333334,
+      "cleanTop1": 0.75,
+      "seconds": 29.1,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "resnet_vd_50_ssld",
+      "paradigm": "distillation-trained CNN",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9140625,
+      "valFooling": 0.185,
+      "randomBaseline": 0.1366666666666667,
+      "margin": 0.04833333333333331,
+      "cleanTop1": 0.815,
+      "seconds": 132.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "resnet_vd_50_ssld",
+      "paradigm": "distillation-trained CNN",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9375,
+      "valFooling": 0.12,
+      "randomBaseline": 0.14500000000000002,
+      "margin": -0.025000000000000022,
+      "cleanTop1": 0.81,
+      "seconds": 8.0,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "resnet_vd_50_ssld",
+      "paradigm": "distillation-trained CNN",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.1875,
+      "valFooling": 0.18,
+      "randomBaseline": 0.13,
+      "margin": 0.04999999999999999,
+      "cleanTop1": 0.825,
+      "seconds": 747.6,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "resnet_vd_50_ssld",
+      "paradigm": "distillation-trained CNN",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.828125,
+      "valFooling": 0.17,
+      "randomBaseline": 0.135,
+      "margin": 0.035,
+      "cleanTop1": 0.82,
+      "seconds": 31.7,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "swin_tiny",
+      "paradigm": "hierarchical transformer (2021)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.8125,
+      "valFooling": 0.15,
+      "randomBaseline": 0.125,
+      "margin": 0.024999999999999994,
+      "cleanTop1": 0.79,
+      "seconds": 542.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "swin_tiny",
+      "paradigm": "hierarchical transformer (2021)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 1.0,
+      "valFooling": 0.115,
+      "randomBaseline": 0.135,
+      "margin": -0.020000000000000004,
+      "cleanTop1": 0.775,
+      "seconds": 33.1,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "swin_tiny",
+      "paradigm": "hierarchical transformer (2021)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.85546875,
+      "valFooling": 0.24,
+      "randomBaseline": 0.12333333333333334,
+      "margin": 0.11666666666666665,
+      "cleanTop1": 0.805,
+      "seconds": 1109.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "swin_tiny",
+      "paradigm": "hierarchical transformer (2021)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.828125,
+      "valFooling": 0.12,
+      "randomBaseline": 0.13,
+      "margin": -0.010000000000000009,
+      "cleanTop1": 0.795,
+      "seconds": 187.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "vit_b16",
+      "paradigm": "vision transformer (2020)",
+      "numImages": 128,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.2109375,
+      "valFooling": 0.175,
+      "randomBaseline": 0.12333333333333334,
+      "margin": 0.05166666666666665,
+      "cleanTop1": 0.775,
+      "seconds": 414.4,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "vit_b16",
+      "paradigm": "vision transformer (2020)",
+      "numImages": 16,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.9375,
+      "valFooling": 0.165,
+      "randomBaseline": 0.13,
+      "margin": 0.035,
+      "cleanTop1": 0.765,
+      "seconds": 11.2,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "vit_b16",
+      "paradigm": "vision transformer (2020)",
+      "numImages": 256,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.1953125,
+      "valFooling": 0.15,
+      "randomBaseline": 0.11333333333333334,
+      "margin": 0.03666666666666665,
+      "cleanTop1": 0.795,
+      "seconds": 767.8,
+      "perturbationLinf": 10.0
+    },
+    {
+      "sweep": "modern",
+      "model": "vit_b16",
+      "paradigm": "vision transformer (2020)",
+      "numImages": 64,
+      "numValImages": 200,
+      "searchNum": 5,
+      "imageSize": [
+        224,
+        224
+      ],
+      "xi": 10.0,
+      "genFooling": 0.875,
+      "valFooling": 0.19,
+      "randomBaseline": 0.12666666666666668,
+      "margin": 0.06333333333333332,
+      "cleanTop1": 0.775,
+      "seconds": 98.1,
+      "perturbationLinf": 10.0
+    }
+  ]
+}

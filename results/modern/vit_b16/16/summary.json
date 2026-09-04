@@ -1,0 +1,45 @@
+{
+  "args": {
+    "models": [
+      "vit_b16"
+    ],
+    "dataset": "imagenet-val",
+    "num_images": 16,
+    "num_val_images": 200,
+    "search_num": [
+      5
+    ],
+    "delta": 0.2,
+    "xi": 10.0,
+    "num_classes": 2,
+    "max_iter_uni": 10,
+    "max_iter_df": 25,
+    "batch_size": 32,
+    "seed": 0,
+    "transfer": false,
+    "out": "results/modern/vit_b16/16"
+  },
+  "results": [
+    {
+      "model": "vit_b16",
+      "search_num": 5,
+      "num_images": 16,
+      "num_val_images": 200,
+      "xi": 10.0,
+      "delta": 0.2,
+      "image_size": [
+        224,
+        224
+      ],
+      "clean_top1_val": 0.765,
+      "seconds": 11.2,
+      "perturbation_linf": 10.0,
+      "train_fooling_rate": 0.9375,
+      "train_fooling_rate_clipped": 0.9375,
+      "val_fooling_rate": 0.165,
+      "val_fooling_rate_clipped": 0.165,
+      "val_random_baseline_clipped": 0.13
+    }
+  ],
+  "transfer": []
+}

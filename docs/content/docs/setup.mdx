@@ -1,0 +1,75 @@
+---
+title: Setup
+description: Models, data, metrics, and the evaluation protocol these results were measured with.
+---
+
+## Protocol
+
+Each run draws `n + 200` images in one go and splits them **disjointly**: the perturbation is fitted
+on `n` images and scored on the 200 held-out ones. This is the change that matters most — the
+repository's original evaluation scored on the fitted images, which is the algorithm's own stopping
+criterion rather than a test of generalisation.
+
+| Parameter                          | Value                                                    |
+| ---------------------------------- | -------------------------------------------------------- |
+| l∞ budget `ξ`                      | 10 pixel levels (of 255)                                 |
+| `δ` (stop at fooling rate ≥ 1 − δ) | 0.2                                                      |
+| Max passes over the generation set | 10                                                       |
+| Max DeepFool iterations per target | 25                                                       |
+| Classes compared per attack        | 2                                                        |
+| Held-out set                       | 200 images, disjoint from the generation set             |
+| Multiplicity M                     | 5, except on the [multiplicity](/docs/multiplicity) page |
+
+## Metrics
+
+**`val fool`** — the fraction of held-out images whose predicted label changes when `v` is added and
+the result is clipped to `[0, 255]`. This is the number that matters.
+
+**`random`** — the same measurement for a random sign perturbation `±ξ`, averaged over three draws.
+Some fraction of predictions flips under _any_ perturbation of this magnitude, so `val fool` is only
+interpretable relative to this floor. It varies a lot by model, which is why a bare fooling rate
+cannot be compared across architectures.
+
+**`margin` = `val fool` − `random`** — the headline. A perturbation is universal only to the extent
+this is positive.
+
+**`gen fool`** — the fooling rate on the fitted images. Reported only to expose the gap against
+`val fool`; it is not evidence of anything.
+
+## Data
+
+Images come from the ILSVRC2012 validation split, fetched through the Hugging Face dataset viewer
+(`NightMachinery/ImageNet1K-val-indexed`, an ungated mirror). Only the images a run asks for are
+fetched, in parallel, and cached on disk. Each image is resized and centre-cropped to the model's
+input resolution using the resize-to-256 / crop-to-224 recipe, scaled for models that want 299.
+
+<Callout title="Sampling">
+  A run reads a contiguous window at a seed-derived offset. The mirror is
+  already shuffled across classes, so a window is a class-diverse sample — a
+  12-image draw gave 12 distinct classes. Clean top-1 varies by a few points
+  between windows, which is visible in the per-run tables.
+</Callout>
+
+## Models
+
+<ModelRoster />
+
+Clean top-1 was checked against published figures to confirm the preprocessing and label mapping are
+right: MobileNetV2 72.0% (published 71.3), ResNet-50 77.0% (74.9), InceptionV3 76.0% (77.9),
+ViT-B/16 78.0% (~81), all on 100 images.
+
+Inception 5h needed care: its label file contains all 1000 ILSVRC names but in a **different order**,
+so class indices do not line up by any offset. Predictions are translated by name, which gives 67.8%
+over 2000 images against a published ~69.8%.
+
+## Hardware and software
+
+TensorFlow 2.21 with Keras 3.15 on an RTX 4090. Gradients come from `tf.GradientTape`; the frozen
+Inception 5h graph is loaded through `tf.compat.v1.wrap_function` into an eager concrete function,
+which is the only compatibility shim in the codebase.
+
+<Callout type="warn" title="Check the GPU is actually in use">
+  TensorFlow falls back to the CPU with a single line of warning. Every
+  measurement in an early version of this work ran on the CPU without saying so.
+  The [Reproduce](/docs/reproduce) page has the check.
+</Callout>

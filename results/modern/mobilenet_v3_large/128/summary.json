@@ -1,0 +1,45 @@
+{
+  "args": {
+    "models": [
+      "mobilenet_v3_large"
+    ],
+    "dataset": "imagenet-val",
+    "num_images": 128,
+    "num_val_images": 200,
+    "search_num": [
+      5
+    ],
+    "delta": 0.2,
+    "xi": 10.0,
+    "num_classes": 2,
+    "max_iter_uni": 10,
+    "max_iter_df": 25,
+    "batch_size": 32,
+    "seed": 0,
+    "transfer": false,
+    "out": "results/modern/mobilenet_v3_large/128"
+  },
+  "results": [
+    {
+      "model": "mobilenet_v3_large",
+      "search_num": 5,
+      "num_images": 128,
+      "num_val_images": 200,
+      "xi": 10.0,
+      "delta": 0.2,
+      "image_size": [
+        224,
+        224
+      ],
+      "clean_top1_val": 0.74,
+      "seconds": 57.4,
+      "perturbation_linf": 10.0,
+      "train_fooling_rate": 0.859375,
+      "train_fooling_rate_clipped": 0.8125,
+      "val_fooling_rate": 0.35,
+      "val_fooling_rate_clipped": 0.345,
+      "val_random_baseline_clipped": 0.19333333333333333
+    }
+  ],
+  "transfer": []
+}

@@ -1,0 +1,59 @@
+---
+title: Method
+description: The universal perturbation loop, and the multi-target inner step this repository adds.
+---
+
+## The original algorithm
+
+Given a classifier `f` and a set of images, the standard UAP algorithm [^1] builds one perturbation
+`v` by passing over the images repeatedly:
+
+1. For each image `x` that is still classified the same with and without `v`,
+2. run **DeepFool** — an untargeted attack that walks `x + v` to its **nearest** decision boundary —
+   and take the minimal perturbation `dr` that crosses it,
+3. accumulate `v ← v + dr`,
+4. project `v` back onto the l_p ball of radius `ξ` so the perturbation stays small,
+5. stop when the fooling rate on the training images reaches `1 − δ`.
+
+## What this variant changes
+
+Step 2 is replaced. Instead of one untargeted attack per image, the image is attacked toward each of
+its top **M** runner-up classes:
+
+1. Rank the classes by the model's logits on `x + v`.
+2. Take ranks 1…M, excluding the current top-1. **M** is the _multiplicity_ — `search_num` in the
+   code.
+3. For each of those M targets, run a **targeted** DeepFool variant (`deeptarget`) that drives the
+   image toward that specific class, using a two-class linearisation of current-label against target.
+4. Accumulate each resulting `dr` into `v`, projecting after every accepted step.
+
+So one image contributes up to M updates per pass instead of one. The claim is that this reaches a
+given fooling rate from fewer images, at the cost of having to tune M.
+
+<Callout title="An implementation detail that matters">
+  All M targeted attacks start from the same point — `img_temp = x + v` is fixed
+  for the duration of the target loop. The M perturbations are therefore
+  independent given that point, and only the accumulation into `v` is
+  sequential.
+</Callout>
+
+## Raw pixel space
+
+Every classifier in this implementation takes raw RGB in `[0, 255]` and applies its own preprocessing
+inside the TensorFlow graph. Perturbations and the `ξ` budget are therefore expressed in pixel
+levels, so the same number means the same thing across models with different preprocessing, and
+clipping a perturbed image back to a valid one is a plain `clip(x + v, 0, 255)`.
+
+For the paper's Inception 5h this is equivalent to the original mean-subtracted formulation:
+subtracting a constant is a shift, so it changes neither gradients nor l_p norms, and a perturbation
+computed either way is the same array.
+
+## Known defect
+
+The loop returns the perturbation from its **final** pass, not its best. When the fooling rate does
+not converge it oscillates, and the returned `v` can be worse than one from an earlier pass. This is
+faithful to the reference implementation — which terminates on reaching its target rate, where final
+and best coincide — but it distorts every non-converging run. See
+[Discussion](/docs/discussion#convergence-failure).
+
+[^1]: [arXiv:1610.08401](https://arxiv.org/abs/1610.08401)

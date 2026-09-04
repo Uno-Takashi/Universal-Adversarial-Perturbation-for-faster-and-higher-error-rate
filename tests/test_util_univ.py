@@ -1,10 +1,12 @@
 import numpy as np
 import pytest
 
-from prepare_imagenet_data import undo_image_avg
+from prepare_imagenet_data import undo_image_avg, undo_image_list
 from util_univ import (
     avg_add_clip_pert,
     cat2label_str,
+    clip_perturbed,
+    fooling_rate_calc,
     fooling_rate_calc_all,
     target_fooling_rate_calc,
 )
@@ -100,3 +102,71 @@ def test_cat2label_str_accepts_scalars_and_single_element_arrays(num_pert, monke
     monkeypatch.chdir(tmp_path)
 
     assert cat2label_str(num_pert) == "kit fox"
+
+
+def test_clip_perturbed_keeps_pixels_in_range():
+    dataset = np.full((2, 4, 4, 3), 250.0)
+    v = np.full((1, 4, 4, 3), 20.0)
+
+    clipped = clip_perturbed(dataset, v)
+
+    assert clipped.max() == 255.0
+    assert clipped.min() >= 0.0
+
+
+def test_clip_perturbed_leaves_in_range_values_alone():
+    dataset = np.full((2, 4, 4, 3), 100.0)
+    v = np.full((1, 4, 4, 3), 10.0)
+
+    np.testing.assert_allclose(clip_perturbed(dataset, v), 110.0)
+
+
+def test_fooling_rate_calc_uses_one_preprocessing_convention():
+    """Both halves of the comparison must see the same input convention.
+
+    The pre-fix version fed f() mean-restored uint8 images while the perturbation had been
+    built in mean-subtracted space, so a model that only ever sees consistent input would
+    disagree with itself.
+    """
+    seen = []
+
+    def f(batch):
+        seen.append(np.copy(batch))
+        logits = np.zeros((len(batch), 2))
+        logits[:, 0] = 1.0
+        return logits
+
+    dataset = np.full((4, 4, 4, 3), 100.0)
+    rate = fooling_rate_calc(v=0.0, dataset=dataset, f=f, batch_size=2)
+
+    assert rate == 0.0
+    # Every batch handed to f is the raw dataset, untouched.
+    for batch in seen:
+        assert batch.dtype == dataset.dtype
+        np.testing.assert_allclose(batch, 100.0)
+
+
+def test_fooling_rate_calc_clip_flag_changes_the_criterion():
+    def f(batch):
+        logits = np.zeros((len(batch), 2))
+        for i, image in enumerate(batch):
+            logits[i, 1 if image.mean() > 260 else 0] = 1.0
+        return logits
+
+    dataset = np.full((4, 4, 4, 3), 250.0)
+    v = np.full((1, 4, 4, 3), 30.0)  # 280 unclipped, 255 clipped
+
+    assert fooling_rate_calc(v, dataset, f, batch_size=2, clip=False) == 1.0
+    assert fooling_rate_calc(v, dataset, f, batch_size=2, clip=True) == 0.0
+
+
+def test_undo_image_list_clips_instead_of_wrapping():
+    """An overshoot must saturate at 255, not wrap round to 44."""
+    from prepare_imagenet_data import do_image_avg
+
+    raw = np.array([[[300.0, 10.0, -50.0]]], dtype=np.float32)
+    mean_subtracted = do_image_avg(raw)[None]
+
+    restored = undo_image_list(mean_subtracted)
+
+    np.testing.assert_array_equal(restored.flatten(), [255, 10, 0])

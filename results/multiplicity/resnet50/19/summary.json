@@ -1,0 +1,45 @@
+{
+  "args": {
+    "models": [
+      "resnet50"
+    ],
+    "dataset": "imagenet-val",
+    "num_images": 128,
+    "num_val_images": 200,
+    "search_num": [
+      19
+    ],
+    "delta": 0.2,
+    "xi": 10.0,
+    "num_classes": 2,
+    "max_iter_uni": 10,
+    "max_iter_df": 25,
+    "batch_size": 32,
+    "seed": 0,
+    "transfer": false,
+    "out": "results/multiplicity/resnet50/19"
+  },
+  "results": [
+    {
+      "model": "resnet50",
+      "search_num": 19,
+      "num_images": 128,
+      "num_val_images": 200,
+      "xi": 10.0,
+      "delta": 0.2,
+      "image_size": [
+        224,
+        224
+      ],
+      "clean_top1_val": 0.705,
+      "seconds": 875.2,
+      "perturbation_linf": 10.0,
+      "train_fooling_rate": 0.3671875,
+      "train_fooling_rate_clipped": 0.3515625,
+      "val_fooling_rate": 0.225,
+      "val_fooling_rate_clipped": 0.23,
+      "val_random_baseline_clipped": 0.18333333333333335
+    }
+  ],
+  "transfer": []
+}

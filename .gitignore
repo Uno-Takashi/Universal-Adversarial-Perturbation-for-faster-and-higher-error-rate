@@ -366,3 +366,10 @@ build/
 data/imagenet_data.npy
 data/inception5h.zip
 data/tensorflow_inception_graph.pb
+
+# Cached ImageNet images fetched from Hugging Face
+.cache/
+
+# Perturbation arrays are large and regenerable; the summaries are the record.
+results/**/*.npy
+results/logs/

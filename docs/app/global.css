@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+/* Categorical slots from a validated palette. Light and dark are separately stepped for
+   their own surface, not an automatic flip; the pair with the worst colour-vision-deficiency
+   separation is dE 9.1, above the dE 8 floor. Charts reference these by role. */
+:root {
+  --viz-1: #2a78d6;
+  --viz-2: #eb6834;
+  --viz-3: #1baf7a;
+  --viz-4: #eda100;
+  --viz-5: #e87ba4;
+  --viz-6: #4a3aa7;
+  --viz-grid: #dedcd7;
+  --viz-axis: #52514e;
+  --viz-rule: #0b0b0b;
+  --viz-surface: #fcfcfb;
+}
+
+.dark {
+  --viz-1: #3987e5;
+  --viz-2: #d95926;
+  --viz-3: #199e70;
+  --viz-4: #c98500;
+  --viz-5: #d55181;
+  --viz-6: #9085e9;
+  --viz-grid: #3a3a37;
+  --viz-axis: #c3c2b7;
+  --viz-rule: #ffffff;
+  --viz-surface: #1a1a19;
+}

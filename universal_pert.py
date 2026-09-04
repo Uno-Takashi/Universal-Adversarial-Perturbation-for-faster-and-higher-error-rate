@@ -1,7 +1,7 @@
 import numpy as np
 
 from deeptarget import deeptarget
-from util_univ import fooling_rate_calc
+from util_univ import _batched_labels, fooling_rate_calc
 
 _rng = np.random.default_rng()
 
@@ -58,29 +58,40 @@ def universal_perturbation(
     fooling_rate = 0.0
     num_images = np.shape(dataset)[0]  # The images should be stacked ALONG FIRST DIMENSION
 
+    # The unperturbed prediction of each image never changes, so compute it once, batched,
+    # instead of once per image per pass. `clean_labels` is permuted alongside `dataset` below
+    # so the two stay aligned.
+    clean_labels = _batched_labels(f, dataset, batch_size)
+
     itr = 0
     while fooling_rate < 1 - delta and itr < max_iter_uni:
-        # Shuffle the dataset
-        _rng.shuffle(dataset)
+        # Shuffle the dataset, keeping the cached clean labels in step.
+        perm = _rng.permutation(num_images)
+        dataset[:] = dataset[perm]
+        clean_labels = clean_labels[perm]
 
         print("Starting pass number ", itr)
 
         # Go through the data set and compute the perturbation increments sequentially
         for k in range(num_images):
             cur_img = dataset[k : (k + 1), :, :, :]
+            img_temp = cur_img + v
 
-            if int(np.argmax(np.array(f(cur_img)).flatten())) == int(
-                np.argmax(np.array(f(cur_img + v)).flatten())
-            ):
-                img_temp = cur_img + v
-                order = np.array(f(cur_img + v)).flatten().argsort()[::-1]
+            # One forward pass per image: the original code ran three here (the clean
+            # prediction, the perturbed one for the test, and the perturbed one again to rank
+            # the classes) plus one more per target purely to print a label.
+            logits = np.asarray(f(img_temp)).flatten()
+            label = int(np.argmax(logits))
 
+            if int(clean_labels[k]) == label:
+                order = logits.argsort()[::-1]
                 order = order[1 : search_num + 1]
                 print(">> k = ", k, ", pass #", itr)
                 for x in order:
-                    print(str(np.argmax(np.array(f(img_temp)).flatten())) + " ---> " + str(x))
+                    print(f"{label} ---> {x}")
 
-                    # Compute adversarial perturbation
+                    # Compute adversarial perturbation. Every target starts from the same
+                    # img_temp, so deeptarget can reuse the logits computed above.
                     dr, n_iter, _ki, _ = deeptarget(
                         img_temp,
                         f,
@@ -88,6 +99,7 @@ def universal_perturbation(
                         overshoot=overshoot,
                         max_iter=max_iter_df,
                         target=int(x),
+                        logits=logits,
                     )
                     # Make sure it converged...
                     if n_iter < max_iter_df - 1:

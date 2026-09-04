@@ -1,0 +1,57 @@
+---
+title: Abstract
+description: How many images does a universal adversarial perturbation actually need, and does the multi-target variant help?
+---
+
+A **universal adversarial perturbation** (UAP) is a single image-agnostic vector `v` that, added to
+most images of a dataset, changes a classifier's prediction. This repository implements a variant of
+the original algorithm [^1] that, for each image, attacks the top **M** runner-up classes rather than
+only the nearest decision boundary, and reports that this reaches a high error rate from fewer
+images.
+
+This site is the experimental record for that claim. It exists because the repository's original
+evaluation measured the fooling rate **on the same images the perturbation was fitted to** — which
+restates the algorithm's own stopping criterion rather than testing whether the perturbation
+generalises.
+
+## What the measurements say
+
+<MarginVsImages />
+
+Re-measured on held-out images, against a random perturbation of the same l∞ budget:
+
+- **Below roughly 100 images the perturbation is worse than random noise.** At 16 images it is
+  12.8 to 20.5 points _below_ the random baseline on every model tested.
+- **The crossing point is between 64 and 128 images**, consistently across four architectures.
+- **The fitted-set fooling rate predicts nothing.** InceptionV3 at 16 images reaches **100%** on its
+  generation set and **11.0%** on held-out images — below the 15.7% that random noise achieves.
+- **More images does not always help.** ResNet-50 peaks at 256 images and then degrades, because the
+  algorithm fails to converge and returns the perturbation from its final pass rather than its best.
+
+<Callout type="warn" title="This is a reproduction record, not a results claim">
+  The numbers here describe *this implementation*, measured with the protocol on
+  the [Setup](/docs/setup) page. Where they disagree with the repository's
+  original README, the numbers here are the ones with a held-out set and a
+  baseline.
+</Callout>
+
+## Contents
+
+| Page                                 | What it covers                                            |
+| ------------------------------------ | --------------------------------------------------------- |
+| [Method](/docs/method)               | The algorithm, and what this variant changes              |
+| [Setup](/docs/setup)                 | Models, data, metrics, and the evaluation protocol        |
+| [Results](/docs/results)             | Fooling rate against generation-set size, per model       |
+| [Multiplicity](/docs/multiplicity)   | The effect of M, the number of targets per image          |
+| [Architectures](/docs/architectures) | Whether the method carries to transformers                |
+| [Discussion](/docs/discussion)       | Failure modes, and what the numbers do and do not support |
+| [Related work](/docs/related-work)   | Where this sits against the published literature          |
+| [Reproduce](/docs/reproduce)         | Running all of it yourself                                |
+
+<Callout>
+  <RunCount /> runs, generated <GeneratedAt />. Every figure and table on this
+  site is rendered from `docs/data/results.json`, which is produced directly
+  from the experiment output.
+</Callout>
+
+[^1]: S. Moosavi-Dezfooli, A. Fawzi, O. Fawzi, P. Frossard. _Universal adversarial perturbations_, CVPR 2017. [arXiv:1610.08401](https://arxiv.org/abs/1610.08401)

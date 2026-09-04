@@ -1,0 +1,45 @@
+{
+  "args": {
+    "models": [
+      "resnet50"
+    ],
+    "dataset": "imagenet-val",
+    "num_images": 128,
+    "num_val_images": 200,
+    "search_num": [
+      3
+    ],
+    "delta": 0.2,
+    "xi": 10.0,
+    "num_classes": 2,
+    "max_iter_uni": 10,
+    "max_iter_df": 25,
+    "batch_size": 32,
+    "seed": 0,
+    "transfer": false,
+    "out": "/tmp/claude-1000/-home-eunoe-Universal-Adversarial-Perturbation-for-faster-and-higher-error-rate/5b430257-4889-4d21-86e5-52d9377d1452/scratchpad/msweep/resnet50/3"
+  },
+  "results": [
+    {
+      "model": "resnet50",
+      "search_num": 3,
+      "num_images": 128,
+      "num_val_images": 200,
+      "xi": 10.0,
+      "delta": 0.2,
+      "image_size": [
+        224,
+        224
+      ],
+      "clean_top1_val": 0.705,
+      "seconds": 258.7,
+      "perturbation_linf": 10.0,
+      "train_fooling_rate": 0.828125,
+      "train_fooling_rate_clipped": 0.78125,
+      "val_fooling_rate": 0.21,
+      "val_fooling_rate_clipped": 0.205,
+      "val_random_baseline_clipped": 0.18333333333333335
+    }
+  ],
+  "transfer": []
+}

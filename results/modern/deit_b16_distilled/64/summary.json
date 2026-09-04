@@ -1,0 +1,45 @@
+{
+  "args": {
+    "models": [
+      "deit_b16_distilled"
+    ],
+    "dataset": "imagenet-val",
+    "num_images": 64,
+    "num_val_images": 200,
+    "search_num": [
+      5
+    ],
+    "delta": 0.2,
+    "xi": 10.0,
+    "num_classes": 2,
+    "max_iter_uni": 10,
+    "max_iter_df": 25,
+    "batch_size": 32,
+    "seed": 0,
+    "transfer": false,
+    "out": "results/modern/deit_b16_distilled/64"
+  },
+  "results": [
+    {
+      "model": "deit_b16_distilled",
+      "search_num": 5,
+      "num_images": 64,
+      "num_val_images": 200,
+      "xi": 10.0,
+      "delta": 0.2,
+      "image_size": [
+        224,
+        224
+      ],
+      "clean_top1_val": 0.81,
+      "seconds": 73.4,
+      "perturbation_linf": 10.0,
+      "train_fooling_rate": 0.875,
+      "train_fooling_rate_clipped": 0.828125,
+      "val_fooling_rate": 0.155,
+      "val_fooling_rate_clipped": 0.16,
+      "val_random_baseline_clipped": 0.10166666666666667
+    }
+  ],
+  "transfer": []
+}
